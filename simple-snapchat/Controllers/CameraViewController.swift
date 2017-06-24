@@ -11,7 +11,7 @@ import AVFoundation
 import Firebase
 
 class CameraViewController : UIViewController, AVCaptureVideoDataOutputSampleBufferDelegate {
-    
+
     var usingSimulator: Bool = true
     var captureSession : AVCaptureSession!
     var backCamera : AVCaptureDevice!
@@ -24,34 +24,34 @@ class CameraViewController : UIViewController, AVCaptureVideoDataOutputSampleBuf
     var ImageCaptured: UIImage!
     var cameraState:Bool = true
     var flashOn:Bool = false
-    
+
     var faceDetector:CIDetector!
     var capturePreviewLayer: AVCaptureVideoPreviewLayer?
     var square: UIImage!
     var smile: UIImage!
     var videoDataOutputQueue: DispatchQueue!
     var lasttime:TimeInterval = 0
-    
+
     /**
      The outlet of UIView of the CameraView.
      */
     @IBOutlet var previewView: UIView!
-    
+
     /**
      The outlet of the take picture button.
      */
     @IBOutlet weak var TakePicButton: UIButton!
-    
+
     /**
      The outlet of the configure flash button.
      */
     @IBOutlet weak var Flash: UIButton!
-    
+
     /**
      The outlet of the flip camera button.
      */
     @IBOutlet weak var FlipCamera: UIButton!
-    
+
     /**
      The action button to scroll to the chat view.
      */
@@ -61,7 +61,7 @@ class CameraViewController : UIViewController, AVCaptureVideoDataOutputSampleBuf
             scrollView!.contentOffset.x = 0.0
             }, completion: nil)
     }
-    
+
     /**
      The action button to scroll to the story view.
      */
@@ -69,10 +69,10 @@ class CameraViewController : UIViewController, AVCaptureVideoDataOutputSampleBuf
         let scrollView = self.view.superview?.superview?.superview as? UIScrollView
         UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
             scrollView!.contentOffset.x += self.view.frame.width
-            
+
             }, completion: nil)
     }
-    
+
     /**
      The action button to scroll to the my information view.
      */
@@ -84,33 +84,33 @@ class CameraViewController : UIViewController, AVCaptureVideoDataOutputSampleBuf
 
 
     }
-    
+
     private func DegreesToRadians(degrees: CGFloat) -> CGFloat {return degrees * .pi / 180}
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.isNavigationBarHidden = true
-        
+
         square = UIImage(named: "squarePNG")
         smile = UIImage(named: "smilePNG")
-        
+
         let detectorOptions = [CIDetectorAccuracy: CIDetectorAccuracyHigh, CIDetectorTracking: true] as [String : Any]
         faceDetector = CIDetector(ofType: CIDetectorTypeFace, context: nil, options: detectorOptions)
-        
+
         loadCamera()
     }
-    
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
+
         checkIfUserIsLoggedIn()
     }
-    
+
     /**
      Method to check whether user is logged in.
      */
     func checkIfUserIsLoggedIn() {
-        
+
         if Auth.auth().currentUser?.uid != nil {
             // User is logged in
             // Do nothing currently
@@ -120,7 +120,7 @@ class CameraViewController : UIViewController, AVCaptureVideoDataOutputSampleBuf
             present(loginRegisterController, animated: true, completion: nil)
         }
     }
-    
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
@@ -131,44 +131,44 @@ class CameraViewController : UIViewController, AVCaptureVideoDataOutputSampleBuf
     func loadCamera() {
         captureSession = AVCaptureSession()
         captureSession.startRunning()
-        
+
         if captureSession.canSetSessionPreset(AVCaptureSession.Preset.high){
             captureSession.sessionPreset = AVCaptureSession.Preset.photo
         }
         let devices = AVCaptureDevice.devices()
-        
+
         for device in devices {
             if (device as AnyObject).hasMediaType(AVMediaType.video){
                 if (device as AnyObject).position == AVCaptureDevice.Position.back {
-                    backCamera = device 
+                    backCamera = device
                 }
                 else if (device as AnyObject).position == AVCaptureDevice.Position.front{
-                    frontCamera = device 
+                    frontCamera = device
                 }
             }
         }
         if backCamera == nil {
             print("The device doesn't have camera")
         }
-        
+
         currentDevice = backCamera
         configureFlash()
         //var error:NSError?
-        
+
         //create a capture device input object from the back and front camera
         do {
             captureDeviceInputBack = try AVCaptureDeviceInput(device: backCamera)
         }
         catch
         {
-            
+
         }
         do {
             captureDeviceInputFront = try AVCaptureDeviceInput(device: frontCamera)
         }catch{
-            
+
         }
-        
+
         if captureSession.canAddInput(captureDeviceInputBack){
             captureSession.addInput(captureDeviceInputBack)
         } else {
@@ -177,29 +177,29 @@ class CameraViewController : UIViewController, AVCaptureVideoDataOutputSampleBuf
         stillImageOutput = AVCaptureStillImageOutput()
         stillImageOutput.outputSettings = [AVVideoCodecKey: AVVideoCodecJPEG]
         captureSession.addOutput(stillImageOutput)
-        
+
         // Make a video data output
         let videoDataOutput = AVCaptureVideoDataOutput()
         // we want BGRA, both CoreGraphics and OpenGL work well with 'BGRA'
         let rgbOutputSettings = [kCVPixelBufferPixelFormatTypeKey as String: NSNumber(value: kCMPixelFormat_32BGRA)]
-        
+
         videoDataOutput.videoSettings = rgbOutputSettings
         videoDataOutput.alwaysDiscardsLateVideoFrames = true
-        
+
         videoDataOutputQueue = DispatchQueue(label: "VideoDataOutputQueue")
         videoDataOutput.setSampleBufferDelegate(self, queue: videoDataOutputQueue)
         captureSession.addOutput(videoDataOutput)
         videoDataOutput.connection(with: AVMediaType.video)!.isEnabled = true
-        
+
         capturePreviewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
         capturePreviewLayer!.videoGravity = AVLayerVideoGravity.resizeAspectFill
         capturePreviewLayer!.frame = self.view.frame
         capturePreviewLayer!.bounds = self.view.bounds
-        
+
         previewView.layer.addSublayer(capturePreviewLayer!)
-        
+
     }
-    
+
     /**
      The method to realize the shutter function.
      */
@@ -221,7 +221,7 @@ class CameraViewController : UIViewController, AVCaptureVideoDataOutputSampleBuf
             })
         }
     }
-    
+
     func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
         if Date().timeIntervalSince1970 - lasttime < 0.1 {
             return
@@ -233,16 +233,16 @@ class CameraViewController : UIViewController, AVCaptureVideoDataOutputSampleBuf
         let ciImage = CIImage(cvPixelBuffer: pixelBuffer, options: attachments)
         let curDeviceOrientation = UIDevice.current.orientation
         var exifOrientation: Int = 0
-        
+
         /* kCGImagePropertyOrientation values
          The intended display orientation of the image. If present, this key is a CFNumber value with the same value as defined
          by the TIFF and EXIF specifications -- see enumeration of integer constants.
          The value specified where the origin (0,0) of the image is located. If not present, a value of 1 is assumed.
-         
+
          used when calling featuresInImage: options: The value for this key is an integer NSNumber from 1..8 as found in kCGImagePropertyOrientation.
          If present, the detection will be done based on that orientation but the coordinates in the returned features will still be based on those of the image. */
-        
-        
+
+
         let PHOTOS_EXIF_0ROW_TOP_0COL_LEFT            = 1 //   1  =  0th row is at the top, and 0th column is on the left (THE DEFAULT).
         //let PHOTOS_EXIF_0ROW_TOP_0COL_RIGHT            = 2 //   2  =  0th row is at the top, and 0th column is on the right.
         let PHOTOS_EXIF_0ROW_BOTTOM_0COL_RIGHT      = 3 //   3  =  0th row is at the bottom, and 0th column is on the right.
@@ -251,7 +251,7 @@ class CameraViewController : UIViewController, AVCaptureVideoDataOutputSampleBuf
         let PHOTOS_EXIF_0ROW_RIGHT_0COL_TOP         = 6 //   6  =  0th row is on the right, and 0th column is the top.
         //let PHOTOS_EXIF_0ROW_RIGHT_0COL_BOTTOM      = 7 //   7  =  0th row is on the right, and 0th column is the bottom.
         let PHOTOS_EXIF_0ROW_LEFT_0COL_BOTTOM       = 8  //   8  =  0th row is on the left, and 0th column is the bottom.
-        
+
         switch curDeviceOrientation {
         case .portraitUpsideDown:  // Device oriented vertically, home button on the top
             exifOrientation = PHOTOS_EXIF_0ROW_LEFT_0COL_BOTTOM
@@ -272,98 +272,36 @@ class CameraViewController : UIViewController, AVCaptureVideoDataOutputSampleBuf
         default:
             exifOrientation = PHOTOS_EXIF_0ROW_RIGHT_0COL_TOP
         }
-        
+
         let imageOptions = [CIDetectorImageOrientation: exifOrientation, CIDetectorSmile: true] as [String : Any]
         let features = faceDetector.features(in: ciImage, options: imageOptions)
-        
+
         // get the clean aperture
         // the clean aperture is a rectangle that defines the portion of the encoded pixel dimensions
         // that represents image data valid for display.
         let fdesc = CMSampleBufferGetFormatDescription(sampleBuffer)!
         let clap = CMVideoFormatDescriptionGetCleanAperture(fdesc, false /*originIsTopLeft == false*/)
-        
+
         videoDataOutputQueue.async() {
             self.drawFaceBoxesForFeatures(features: features, forVideoBox: clap, orientation: curDeviceOrientation)
         }
     }
-    
-    func postImageData(completion: () -> ()) {
-        let requestUrl = URL(string: "https://westus.api.cognitive.microsoft.com/emotion/v1.0/recognize")
-        let key = "b2ecededcbe3486fae0a8976b794e4f2"
-        
-        var request = URLRequest(url: requestUrl!)
-        request.setValue(key, forHTTPHeaderField: "Ocp-Apim-Subscription-Key")
-        
-        let image = UIImage(named: "sad.jpg")
-        let imageData = UIImagePNGRepresentation(image!)
-        request.setValue("application/octet-stream", forHTTPHeaderField: "Content-Type")
-        request.httpBody = imageData
-        
-        request.httpMethod = "POST"
-        
-        let task = URLSession.shared.dataTask(with: request){ data, response, error in
-            if error != nil{
-                print("Error -> \(String(describing: error))")
-                return
-            }else{
-                //print(data)
-                let results = try! JSONSerialization.jsonObject(with: data!)
-                print(results)
-            }
-            
-        }
-        task.resume()
-        
+
+    func resizeRectAspectFill(rect: CGRect, from: CGSize, to: CGSize) -> CGRect {
+        var scaledRect = CGRect.zero
+
+        let aspectWidth = to.width / from.width
+        let aspectHeight = to.height / from.height
+        let aspectRatio = max(aspectWidth, aspectHeight)
+
+        scaledRect.size.width = rect.size.width * aspectRatio
+        scaledRect.size.height = rect.size.height * aspectRatio
+        scaledRect.origin.x = rect.origin.x * aspectRatio + (to.width - from.width * aspectRatio) / 2
+        scaledRect.origin.y = rect.origin.y * aspectRatio + (to.height - from.height * aspectRatio) / 2
+
+        return scaledRect
     }
-    
-    func videoPreviewBoxForGravity(gravity: AVLayerVideoGravity, frameSize: CGSize, apertureSize: CGSize) -> CGRect {
-//        print(apertureSize)
-        let apertureRatio = apertureSize.height / apertureSize.width
-        let viewRatio = frameSize.width / frameSize.height
-        
-        var size = CGSize.zero
-        switch gravity {
-        case .resizeAspectFill:
-            if viewRatio > apertureRatio {
-                size.width = frameSize.width
-                size.height = apertureSize.width * (frameSize.width / apertureSize.height)
-            } else {
-                size.width = apertureSize.height * (frameSize.height / apertureSize.width)
-                size.height = frameSize.height
-            }
-        case .resizeAspect:
-            if viewRatio > apertureRatio {
-                size.width = apertureSize.height * (frameSize.height / apertureSize.width)
-                size.height = frameSize.height;
-            } else {
-                size.width = frameSize.width;
-                size.height = apertureSize.width * (frameSize.width / apertureSize.height);
-            }
-        case .resize:
-            size.width = frameSize.width
-            size.height = frameSize.height
-        default:
-            break
-        }
-//        print(size, frameSize)
-        var videoBox: CGRect = CGRect()
-        size = frameSize;
-        videoBox.size = frameSize;
-        if size.width < frameSize.width {
-            videoBox.origin.x = (frameSize.width - size.width) / 2
-        } else {
-            videoBox.origin.x = (size.width - frameSize.width) / 2
-        }
-        
-        if size.height < frameSize.height {
-            videoBox.origin.y = (frameSize.height - size.height) / 2
-        } else {
-            videoBox.origin.y = (size.height - frameSize.height) / 2
-        }
-        
-        return videoBox;
-    }
-    
+
     // called asynchronously as the capture output is capturing sample buffers, this method asks the face detector (if on)
     // to detect features and for each draw the red square in a layer and set appropriate orientation
     private func drawFaceBoxesForFeatures(features: [CIFeature], forVideoBox clap: CGRect, orientation: UIDeviceOrientation) {
@@ -371,59 +309,33 @@ class CameraViewController : UIViewController, AVCaptureVideoDataOutputSampleBuf
         let sublayersCount = sublayers.count
         var currentSublayer = 0
         var featuresCount = features.count, currentFeature = 0
-        
+
         CATransaction.begin()
         CATransaction.setValue(true, forKey: kCATransactionDisableActions)
-        
+
         // hide all the face layers
         for layer in sublayers {
             if layer.name == "FaceLayer" {
                 layer.isHidden = true
             }
         }
-        
-//        print(featuresCount, sublayersCount)
-        
+
         if featuresCount == 0 {
             CATransaction.commit()
             return // early bail.
         }
-        
+
         let parentFrameSize = previewView.frame.size;
-        let gravity = capturePreviewLayer?.videoGravity
         let isMirrored = capturePreviewLayer?.connection?.isVideoMirrored ?? false
-        let previewBox = videoPreviewBoxForGravity(gravity: gravity!,
-                                                   frameSize: parentFrameSize,
-                                                   apertureSize: clap.size)
-        
-        for ff in features as! [CIFaceFeature] {
-            var x : CGFloat = 0.0, y : CGFloat = 0.0
-            if ff.hasLeftEyePosition {
-                x = ff.leftEyePosition.x
-                y = ff.leftEyePosition.y
-//                print(ff.leftEyeClosed ? "(\(x) \(y))" : "(\(x) \(y))" + "👀")
-            }
-            
-            if ff.hasRightEyePosition {
-                x = ff.rightEyePosition.x
-                y = ff.rightEyePosition.y
-//                print(ff.rightEyeClosed ? "(\(x) \(y))" : "(\(x) \(y))" + "👀")
-            }
-            
-            if ff.hasMouthPosition {
-                x = ff.mouthPosition.x
-                y = ff.mouthPosition.y
-//                print(ff.hasSmile ? "\(x) \(y)" + "😊" : "(\(x) \(y))")
-            }
-        }
-        
-        
+
+        let cameraBox = CGSize(width: clap.size.height, height: clap.size.width)
+
         for ff in features as! [CIFaceFeature] {
             // find the correct position for the square layer within the previewLayer
             // the feature box originates in the bottom left of the video frame.
             // (Bottom right if mirroring is turned on)
             var faceRect = ff.bounds
-            
+
             // flip preview width and height
             var temp = faceRect.size.width
             faceRect.size.width = faceRect.size.height
@@ -431,24 +343,15 @@ class CameraViewController : UIViewController, AVCaptureVideoDataOutputSampleBuf
             temp = faceRect.origin.x
             faceRect.origin.x = faceRect.origin.y
             faceRect.origin.y = temp
-            // scale coordinates so they fit in the preview box, which may be scaled
-            let widthScaleBy = previewBox.size.width / clap.size.height
-            let heightScaleBy = previewBox.size.height / clap.size.width
-            faceRect.size.width *= widthScaleBy
-            faceRect.size.height *= heightScaleBy
-            faceRect.origin.x *= widthScaleBy
-            faceRect.origin.y *= heightScaleBy
-            
+
+            faceRect = resizeRectAspectFill(rect: faceRect, from: cameraBox, to: parentFrameSize)
+
             if isMirrored {
-                faceRect = faceRect.offsetBy(dx: previewBox.origin.x + previewBox.size.width - faceRect.size.width - (faceRect.origin.x * 2), dy: previewBox.origin.y)
-            } else {
-                faceRect = faceRect.offsetBy(dx: previewBox.origin.x, dy: previewBox.origin.y)
+                faceRect = faceRect.offsetBy(dx: parentFrameSize.width - faceRect.origin.x * 2 - faceRect.size.width, dy:0)
             }
-            
-//            print(faceRect, previewBox, ff.bounds)
-            
+
             var featureLayer: CALayer? = nil
-            
+
             // re-use an existing layer if possible
             while featureLayer == nil && (currentSublayer < sublayersCount) {
                 let currentLayer = sublayers[currentSublayer];currentSublayer += 1
@@ -457,7 +360,7 @@ class CameraViewController : UIViewController, AVCaptureVideoDataOutputSampleBuf
                     currentLayer.isHidden = false
                 }
             }
-            
+
             // create a new one if necessary
             if featureLayer == nil {
                 featureLayer = CALayer()
@@ -471,7 +374,7 @@ class CameraViewController : UIViewController, AVCaptureVideoDataOutputSampleBuf
                 featureLayer!.contents = square.cgImage
             }
             featureLayer!.frame = faceRect
-            
+
             switch orientation {
             case .portrait:
                 featureLayer!.setAffineTransform(CGAffineTransform(rotationAngle: DegreesToRadians(degrees: 0.0)))
@@ -484,15 +387,15 @@ class CameraViewController : UIViewController, AVCaptureVideoDataOutputSampleBuf
             case .faceUp, .faceDown:
                 break
             default:
-                
+
                 break // leave the layer in its last known orientation//        }
             }
             currentFeature += 1
         }
-        
+
         CATransaction.commit()
     }
-    
+
     /**
      The method to realise opening and closing camera flash.
      */
@@ -506,24 +409,24 @@ class CameraViewController : UIViewController, AVCaptureVideoDataOutputSampleBuf
         }
             self.configureFlash()
     }
-    
+
     /**
      The method to realize changing the camera direction.
      */
     @IBAction func Flip_Camera(_ sender: UIButton){
-        
+
         cameraFacingback = !cameraFacingback
         if cameraFacingback {
             displayBackCamera()
             self.FlipCamera.setImage(UIImage(named:"Camera flip"), for: UIControlState.normal)
-            
+
         } else {
-            
+
             self.FlipCamera.setImage(UIImage(named:"Camera_flip_self"), for: UIControlState.normal)
             displayFrontCamera()
         }
     }
-    
+
     /**
      The method to load back camera.
      */
@@ -536,9 +439,9 @@ class CameraViewController : UIViewController, AVCaptureVideoDataOutputSampleBuf
                 captureSession.addInput(captureDeviceInputBack)
             }
         }
-        
+
     }
-    
+
     /**
      The method to load front camera.
      */
@@ -552,7 +455,7 @@ class CameraViewController : UIViewController, AVCaptureVideoDataOutputSampleBuf
             }
         }
     }
-    
+
     /**
      The method to configure flash light.
      */
@@ -560,7 +463,7 @@ class CameraViewController : UIViewController, AVCaptureVideoDataOutputSampleBuf
         do {
             try backCamera.lockForConfiguration()
         } catch {
-            
+
         }
         if backCamera.hasFlash {
             if flashOn {
@@ -572,12 +475,12 @@ class CameraViewController : UIViewController, AVCaptureVideoDataOutputSampleBuf
                     backCamera.flashMode = AVCaptureDevice.FlashMode.off
                     //flashOn = false
                 }
-                
+
             }
         }
         backCamera.unlockForConfiguration()
     }
-    
+
     /**
      The method to realise camera focusing.
      */
@@ -587,13 +490,13 @@ class CameraViewController : UIViewController, AVCaptureVideoDataOutputSampleBuf
 //        let location = touchpoint?.location(in: self.view)
         let x = (touchpoint?.location(in: self.view).x)! / self.view.bounds.width
         let y = (touchpoint?.location(in: self.view).y)! / self.view.bounds.height
-        
+
 //        var locationX = location?.x
 //        var locationY = location?.y
-        
+
         focusOnPoint(x: x, y: y)
     }
-    
+
     /**
      The algorithm to reasise autofocus .
      */
@@ -608,11 +511,11 @@ class CameraViewController : UIViewController, AVCaptureVideoDataOutputSampleBuf
         do {
             try currentDevice.lockForConfiguration()
         }catch {
-            
+
         }
-        
+
         if currentDevice.isFocusPointOfInterestSupported{
-            
+
             currentDevice.focusPointOfInterest = focusPoint
         }
         if currentDevice.isFocusModeSupported(AVCaptureDevice.FocusMode.autoFocus)
@@ -629,12 +532,12 @@ class CameraViewController : UIViewController, AVCaptureVideoDataOutputSampleBuf
         currentDevice.unlockForConfiguration()
 
     }
-    
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "test"{
             let previewController = segue.destination as! PreviewController
-            previewController.capturedPhoto = self.ImageCaptured            
+            previewController.capturedPhoto = self.ImageCaptured
         }
 }
 }
-    
+
