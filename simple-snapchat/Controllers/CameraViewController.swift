@@ -287,81 +287,19 @@ class CameraViewController : UIViewController, AVCaptureVideoDataOutputSampleBuf
         }
     }
     
-    func postImageData(completion: () -> ()) {
-        let requestUrl = URL(string: "https://westus.api.cognitive.microsoft.com/emotion/v1.0/recognize")
-        let key = "b2ecededcbe3486fae0a8976b794e4f2"
+    func resizeRectAspectFill(rect: CGRect, from: CGSize, to: CGSize) -> CGRect {
+        var scaledRect = CGRect.zero
         
-        var request = URLRequest(url: requestUrl!)
-        request.setValue(key, forHTTPHeaderField: "Ocp-Apim-Subscription-Key")
+        let aspectWidth = to.width / from.width
+        let aspectHeight = to.height / from.height
+        let aspectRatio = max(aspectWidth, aspectHeight)
         
-        let image = UIImage(named: "sad.jpg")
-        let imageData = UIImagePNGRepresentation(image!)
-        request.setValue("application/octet-stream", forHTTPHeaderField: "Content-Type")
-        request.httpBody = imageData
+        scaledRect.size.width = rect.size.width * aspectRatio
+        scaledRect.size.height = rect.size.height * aspectRatio
+        scaledRect.origin.x = rect.origin.x * aspectRatio + (to.width - from.width * aspectRatio) / 2
+        scaledRect.origin.y = rect.origin.y * aspectRatio + (to.height - from.height * aspectRatio) / 2
         
-        request.httpMethod = "POST"
-        
-        let task = URLSession.shared.dataTask(with: request){ data, response, error in
-            if error != nil{
-                print("Error -> \(String(describing: error))")
-                return
-            }else{
-                //print(data)
-                let results = try! JSONSerialization.jsonObject(with: data!)
-                print(results)
-            }
-            
-        }
-        task.resume()
-        
-    }
-    
-    func videoPreviewBoxForGravity(gravity: AVLayerVideoGravity, frameSize: CGSize, apertureSize: CGSize) -> CGRect {
-//        print(apertureSize)
-        let apertureRatio = apertureSize.height / apertureSize.width
-        let viewRatio = frameSize.width / frameSize.height
-        
-        var size = CGSize.zero
-        switch gravity {
-        case .resizeAspectFill:
-            if viewRatio > apertureRatio {
-                size.width = frameSize.width
-                size.height = apertureSize.width * (frameSize.width / apertureSize.height)
-            } else {
-                size.width = apertureSize.height * (frameSize.height / apertureSize.width)
-                size.height = frameSize.height
-            }
-        case .resizeAspect:
-            if viewRatio > apertureRatio {
-                size.width = apertureSize.height * (frameSize.height / apertureSize.width)
-                size.height = frameSize.height;
-            } else {
-                size.width = frameSize.width;
-                size.height = apertureSize.width * (frameSize.width / apertureSize.height);
-            }
-        case .resize:
-            size.width = frameSize.width
-            size.height = frameSize.height
-        default:
-            break
-        }
-//        print(size, frameSize)
-        var videoBox: CGRect = CGRect()
-        size = frameSize;
-        videoBox.size = frameSize;
-        if size.width < frameSize.width {
-            videoBox.origin.x = (frameSize.width - size.width) / 2
-        } else {
-            videoBox.origin.x = (size.width - frameSize.width) / 2
-        }
-        
-        if size.height < frameSize.height {
-            videoBox.origin.y = (frameSize.height - size.height) / 2
-        } else {
-            videoBox.origin.y = (size.height - frameSize.height) / 2
-        }
-        
-        return videoBox;
+        return scaledRect
     }
     
     // called asynchronously as the capture output is capturing sample buffers, this method asks the face detector (if on)
@@ -382,41 +320,15 @@ class CameraViewController : UIViewController, AVCaptureVideoDataOutputSampleBuf
             }
         }
         
-//        print(featuresCount, sublayersCount)
-        
         if featuresCount == 0 {
             CATransaction.commit()
             return // early bail.
         }
         
         let parentFrameSize = previewView.frame.size;
-        let gravity = capturePreviewLayer?.videoGravity
         let isMirrored = capturePreviewLayer?.connection?.isVideoMirrored ?? false
-        let previewBox = videoPreviewBoxForGravity(gravity: gravity!,
-                                                   frameSize: parentFrameSize,
-                                                   apertureSize: clap.size)
         
-        for ff in features as! [CIFaceFeature] {
-            var x : CGFloat = 0.0, y : CGFloat = 0.0
-            if ff.hasLeftEyePosition {
-                x = ff.leftEyePosition.x
-                y = ff.leftEyePosition.y
-//                print(ff.leftEyeClosed ? "(\(x) \(y))" : "(\(x) \(y))" + "👀")
-            }
-            
-            if ff.hasRightEyePosition {
-                x = ff.rightEyePosition.x
-                y = ff.rightEyePosition.y
-//                print(ff.rightEyeClosed ? "(\(x) \(y))" : "(\(x) \(y))" + "👀")
-            }
-            
-            if ff.hasMouthPosition {
-                x = ff.mouthPosition.x
-                y = ff.mouthPosition.y
-//                print(ff.hasSmile ? "\(x) \(y)" + "😊" : "(\(x) \(y))")
-            }
-        }
-        
+        let cameraBox = CGSize(width: clap.size.height, height: clap.size.width)
         
         for ff in features as! [CIFaceFeature] {
             // find the correct position for the square layer within the previewLayer
@@ -431,21 +343,12 @@ class CameraViewController : UIViewController, AVCaptureVideoDataOutputSampleBuf
             temp = faceRect.origin.x
             faceRect.origin.x = faceRect.origin.y
             faceRect.origin.y = temp
-            // scale coordinates so they fit in the preview box, which may be scaled
-            let widthScaleBy = previewBox.size.width / clap.size.height
-            let heightScaleBy = previewBox.size.height / clap.size.width
-            faceRect.size.width *= widthScaleBy
-            faceRect.size.height *= heightScaleBy
-            faceRect.origin.x *= widthScaleBy
-            faceRect.origin.y *= heightScaleBy
+            
+            faceRect = resizeRectAspectFill(rect: faceRect, from: cameraBox, to: parentFrameSize)
             
             if isMirrored {
-                faceRect = faceRect.offsetBy(dx: previewBox.origin.x + previewBox.size.width - faceRect.size.width - (faceRect.origin.x * 2), dy: previewBox.origin.y)
-            } else {
-                faceRect = faceRect.offsetBy(dx: previewBox.origin.x, dy: previewBox.origin.y)
+                faceRect = faceRect.offsetBy(dx: parentFrameSize.width - faceRect.origin.x * 2 - faceRect.size.width, dy:0)
             }
-            
-//            print(faceRect, previewBox, ff.bounds)
             
             var featureLayer: CALayer? = nil
             
