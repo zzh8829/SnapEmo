@@ -42,7 +42,7 @@
 		0061700F1D9FCEC2002354B3 /* Story.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0061700E1D9FCEC2002354B3 /* Story.swift */; };
 		00C4571D1DA5094E004075FD /* MemoriesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00C4571C1DA5094E004075FD /* MemoriesController.swift */; };
 		00DD9D181D98F5D3006489BE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00DD9D171D98F5D3006489BE /* AppDelegate.swift */; };
-		00DD9D1D1D98F5D3006489BE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 00DD9D1B1D98F5D3006489BE /* Main.storyboard */; };
+		00DD9D1D1D98F5D3006489BE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 00DD9D1B1D98F5D3006489BE /* Main.storyboard */; settings = {ASSET_TAGS = (addedMe, ); }; };
 		00DD9D1F1D98F5D3006489BE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 00DD9D1E1D98F5D3006489BE /* Assets.xcassets */; };
 		00DD9D221D98F5D3006489BE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 00DD9D201D98F5D3006489BE /* LaunchScreen.storyboard */; };
 		00E2E8D91DADCA380080CF24 /* SendingPhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00E2E8D81DADCA380080CF24 /* SendingPhoto.swift */; };
@@ -458,6 +458,9 @@
 		00DD9D0C1D98F5D3006489BE /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				KnownAssetTags = (
+					addedMe,
+				);
 				LastSwiftUpdateCheck = 0820;
 				LastUpgradeCheck = 0900;
 				ORGANIZATIONNAME = "University of Melbourne";

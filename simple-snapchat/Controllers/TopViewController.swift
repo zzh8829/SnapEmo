@@ -46,6 +46,7 @@ class TopViewController: UIViewController {
         nameLabel.topAnchor.constraint(equalTo: QRCode.bottomAnchor, constant: 20).isActive = true
         nameLabel.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         
+        self.view.viewWithTag(666)?.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 20).isActive = true
         
         delay(2, closure: {
         self.loadQRCode()
