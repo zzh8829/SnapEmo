@@ -55,7 +55,7 @@ class PublicAgencyCell: UICollectionViewCell, UICollectionViewDataSource, UIColl
         
     }
     
-    func handleDisplayPublicStories(tapGesture: UITapGestureRecognizer) {
+    @objc func handleDisplayPublicStories(tapGesture: UITapGestureRecognizer) {
         let layout = UICollectionViewFlowLayout()
         let publicStoryController = PublicStoryController(collectionViewLayout: layout)
         let agencyCell = tapGesture.view as! AgencyCell

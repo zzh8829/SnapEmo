@@ -21,7 +21,7 @@ class QRReaderControllerViewController: UIViewController , AVCaptureMetadataOutp
         view.backgroundColor = UIColor.black
         captureSession = AVCaptureSession()
         
-        let videoCaptureDevice = AVCaptureDevice.defaultDevice(withMediaType: AVMediaTypeVideo)
+        let videoCaptureDevice = AVCaptureDevice.default(for: AVMediaType.video)!
         let videoInput: AVCaptureDeviceInput
         
         do {
@@ -43,7 +43,7 @@ class QRReaderControllerViewController: UIViewController , AVCaptureMetadataOutp
             captureSession.addOutput(metadataOutput)
             
             metadataOutput.setMetadataObjectsDelegate(self, queue: DispatchQueue.main)
-            metadataOutput.metadataObjectTypes = [AVMetadataObjectTypeQRCode]
+            metadataOutput.metadataObjectTypes = [AVMetadataObject.ObjectType.qr]
         } else {
             failed()
             return
@@ -51,7 +51,7 @@ class QRReaderControllerViewController: UIViewController , AVCaptureMetadataOutp
         
         previewLayer = AVCaptureVideoPreviewLayer(session: captureSession);
         previewLayer.frame = view.layer.bounds;
-        previewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
+        previewLayer.videoGravity = AVLayerVideoGravity.resizeAspectFill;
         view.layer.addSublayer(previewLayer);
         
         captureSession.startRunning();
@@ -64,7 +64,7 @@ class QRReaderControllerViewController: UIViewController , AVCaptureMetadataOutp
         captureSession = nil
     }
     
-    func closeScanner(){
+    @objc func closeScanner(){
         self.dismiss(animated: true, completion: nil)
     }
     
@@ -84,19 +84,19 @@ class QRReaderControllerViewController: UIViewController , AVCaptureMetadataOutp
         }
     }
     
-    func captureOutput(_ captureOutput: AVCaptureOutput!, didOutputMetadataObjects metadataObjects: [Any]!, from connection: AVCaptureConnection!) {
+    func metadataOutput(_ captureOutput: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
         captureSession.stopRunning()
         
         if let metadataObject = metadataObjects.first {
             let readableObject = metadataObject as! AVMetadataMachineReadableCodeObject;
             
             AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
-            found(userID: readableObject.stringValue);
+            found(userID: readableObject.stringValue!);
         }
     }
     
     func found(userID: String) {
-        let myID = FIRAuth.auth()?.currentUser?.uid
+        let myID = Auth.auth().currentUser?.uid
         print("QR reader get", userID)
         if isValidInput(inputID: userID) {
             print("Only execute if there is no special characters.")
@@ -104,7 +104,7 @@ class QRReaderControllerViewController: UIViewController , AVCaptureMetadataOutp
                 
                 var name : String?
                 
-                let userRef = FIRDatabase.database().reference().child("users").child(userID)
+                let userRef = Database.database().reference().child("users").child(userID)
                 userRef.observeSingleEvent(of: .value, with: { (snapshot) in
                     print(snapshot)
                     if snapshot.value != nil {
@@ -112,7 +112,7 @@ class QRReaderControllerViewController: UIViewController , AVCaptureMetadataOutp
                             print("Dictionary is ", dictionary)
                             name = dictionary["name"] as? String
                             
-                            let friendRef = FIRDatabase.database().reference().child("friendship").child(userID)
+                            let friendRef = Database.database().reference().child("friendship").child(userID)
                             friendRef.observeSingleEvent(of: .value, with: { (snapshot) in
                                 if let dictionary = snapshot.value as? [String:AnyObject] {
                                     if (dictionary[myID!] != nil && dictionary[myID!] as? Int == 2)  {
@@ -157,16 +157,16 @@ class QRReaderControllerViewController: UIViewController , AVCaptureMetadataOutp
     }
     
     func sendRequest(id:String){
-        let fromID = (FIRAuth.auth()?.currentUser?.uid)!
+        let fromID = (Auth.auth().currentUser?.uid)!
         let toID = id
         
         // "0": wait for partner's acceptance
         // "1": receive a new request, the user can choose to accept or reject
         // "2": establish the friendship
         
-        let senderFriendRef = FIRDatabase.database().reference().child("friendship").child(fromID)
+        let senderFriendRef = Database.database().reference().child("friendship").child(fromID)
         senderFriendRef.updateChildValues([toID : 0])
-        let receiverFriendRef = FIRDatabase.database().reference().child("friendship").child(toID)
+        let receiverFriendRef = Database.database().reference().child("friendship").child(toID)
         receiverFriendRef.updateChildValues([fromID: 1])
         
     }

@@ -42,7 +42,7 @@ class PhotoCell: UICollectionViewCell {
     var blackBackgroundView: UIView?
     var startingImageView: UIImageView?
     
-    func handleZoomTap(tapGesture: UITapGestureRecognizer) {
+    @objc func handleZoomTap(tapGesture: UITapGestureRecognizer) {
         if let imageView = tapGesture.view as? UIImageView {
             
             startingImageView = imageView
@@ -81,7 +81,7 @@ class PhotoCell: UICollectionViewCell {
         }
     }
     
-    func handleZoomOut(tapGesture: UITapGestureRecognizer) {
+    @objc func handleZoomOut(tapGesture: UITapGestureRecognizer) {
         if let zoomOutImageView = tapGesture.view as? UIImageView {
             zoomOutImageView.contentMode = .scaleAspectFill
             zoomOutImageView.clipsToBounds = true

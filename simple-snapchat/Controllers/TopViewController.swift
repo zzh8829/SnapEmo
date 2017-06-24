@@ -63,7 +63,7 @@ class TopViewController: UIViewController {
     
     func loadQRCode(){
         
-        let uid = FIRAuth.auth()?.currentUser?.uid
+        let uid = Auth.auth().currentUser?.uid
         if uid != nil {
             print("current user is ", uid)
             if let code = generateQRCode(from: uid!){
@@ -74,7 +74,7 @@ class TopViewController: UIViewController {
                 }
             }
             
-            let nameRef = FIRDatabase.database().reference().child("users").child(uid!)
+            let nameRef = Database.database().reference().child("users").child(uid!)
             nameRef.observeSingleEvent(of: .value, with: { (snapshot) in
                 if let dictionary = snapshot.value as? [String: AnyObject]{
                     DispatchQueue.global().async {
@@ -103,7 +103,7 @@ class TopViewController: UIViewController {
     
     @IBAction func logout(_ sender: UIButton) {
         do {
-            try FIRAuth.auth()?.signOut()
+            try Auth.auth().signOut()
         } catch let error{
             print(error)
         }

@@ -32,7 +32,7 @@ class ImageWithTimerViewController: UIViewController {
         navigationItem.title = title
         self.navigationController?.navigationBar.barTintColor = UIColor.white
         self.navigationController?.navigationBar.tintColor = UIColor(red: 102, green: 178, blue: 255)
-        self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName:UIColor(red: 102, green: 178, blue: 255)]
+        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor.rawValue:UIColor(red: 102, green: 178, blue: 255)]
         navigationController?.navigationBar.isHidden = false
         view.addSubview(imageView)
         // Add constraints
@@ -55,7 +55,7 @@ class ImageWithTimerViewController: UIViewController {
             deadline: DispatchTime.now() + Double(Int64(delay * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC), execute: closure)
     }
     
-    func handleCancel(){
+    @objc func handleCancel(){
         self.dismiss(animated: true) {
             
         }

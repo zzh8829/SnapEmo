@@ -96,7 +96,7 @@ class CameraViewController : UIViewController {
      */
     func checkIfUserIsLoggedIn() {
         
-        if FIRAuth.auth()?.currentUser?.uid != nil {
+        if Auth.auth().currentUser?.uid != nil {
             // User is logged in
             // Do nothing currently
         } else {
@@ -117,18 +117,18 @@ class CameraViewController : UIViewController {
         captureSession = AVCaptureSession()
         captureSession.startRunning()
         
-        if captureSession.canSetSessionPreset(AVCaptureSessionPresetHigh){
-            captureSession.sessionPreset = AVCaptureSessionPresetPhoto
+        if captureSession.canSetSessionPreset(AVCaptureSession.Preset.high){
+            captureSession.sessionPreset = AVCaptureSession.Preset.photo
         }
         let devices = AVCaptureDevice.devices()
         
-        for device in devices! {
-            if (device as AnyObject).hasMediaType(AVMediaTypeVideo){
-                if (device as AnyObject).position == AVCaptureDevicePosition.back {
-                    backCamera = device as! AVCaptureDevice
+        for device in devices {
+            if (device as AnyObject).hasMediaType(AVMediaType.video){
+                if (device as AnyObject).position == AVCaptureDevice.Position.back {
+                    backCamera = device 
                 }
-                else if (device as AnyObject).position == AVCaptureDevicePosition.front{
-                    frontCamera = device as! AVCaptureDevice
+                else if (device as AnyObject).position == AVCaptureDevice.Position.front{
+                    frontCamera = device 
                 }
             }
         }
@@ -164,13 +164,13 @@ class CameraViewController : UIViewController {
         captureSession.addOutput(stillImageOutput)
         let capturePreviewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
         
-        capturePreviewLayer?.videoGravity = AVLayerVideoGravityResizeAspectFill
+        capturePreviewLayer.videoGravity = AVLayerVideoGravity.resizeAspectFill
         
-        capturePreviewLayer?.frame = self.view.frame
+        capturePreviewLayer.frame = self.view.frame
         
-        capturePreviewLayer?.bounds = self.view.bounds
+        capturePreviewLayer.bounds = self.view.bounds
         
-        previewView.layer.addSublayer(capturePreviewLayer!)
+        previewView.layer.addSublayer(capturePreviewLayer)
         
     }
     
@@ -183,10 +183,10 @@ class CameraViewController : UIViewController {
         if !captureSession.isRunning {
             return
         }
-        if let videoConnection = stillImageOutput!.connection(withMediaType: AVMediaTypeVideo){
+        if let videoConnection = stillImageOutput!.connection(with: AVMediaType.video){
             stillImageOutput?.captureStillImageAsynchronously(from: videoConnection, completionHandler: {(sampleBuffer,error) -> Void in
                 if sampleBuffer != nil {
-                let imageData = AVCaptureStillImageOutput.jpegStillImageNSDataRepresentation(sampleBuffer)
+                let imageData = AVCaptureStillImageOutput.jpegStillImageNSDataRepresentation(sampleBuffer!)
                 let dataProvider = CGDataProvider(data: imageData as! CFData)
                 let cgImageRef = CGImage(jpegDataProviderSource: dataProvider!, decode: nil, shouldInterpolate: true, intent: CGColorRenderingIntent.defaultIntent)
                 self.ImageCaptured = UIImage(cgImage:cgImageRef!, scale: 1.0, orientation: UIImageOrientation.right)
@@ -267,12 +267,12 @@ class CameraViewController : UIViewController {
         }
         if backCamera.hasFlash {
             if flashOn {
-                if backCamera.isFlashModeSupported(AVCaptureFlashMode.on){
-                backCamera.flashMode = AVCaptureFlashMode.on
+                if backCamera.isFlashModeSupported(AVCaptureDevice.FlashMode.on){
+                backCamera.flashMode = AVCaptureDevice.FlashMode.on
                 }
             }else {
-                if backCamera.isFlashModeSupported(AVCaptureFlashMode.off){
-                    backCamera.flashMode = AVCaptureFlashMode.off
+                if backCamera.isFlashModeSupported(AVCaptureDevice.FlashMode.off){
+                    backCamera.flashMode = AVCaptureDevice.FlashMode.off
                     //flashOn = false
                 }
                 
@@ -318,16 +318,16 @@ class CameraViewController : UIViewController {
             
             currentDevice.focusPointOfInterest = focusPoint
         }
-        if currentDevice.isFocusModeSupported(AVCaptureFocusMode.autoFocus)
+        if currentDevice.isFocusModeSupported(AVCaptureDevice.FocusMode.autoFocus)
         {
-            currentDevice.focusMode = AVCaptureFocusMode.autoFocus
+            currentDevice.focusMode = AVCaptureDevice.FocusMode.autoFocus
         }
         if currentDevice.isExposurePointOfInterestSupported
         {
             currentDevice.exposurePointOfInterest = focusPoint
         }
-        if currentDevice.isExposureModeSupported(AVCaptureExposureMode.autoExpose) {
-            currentDevice.exposureMode = AVCaptureExposureMode.autoExpose
+        if currentDevice.isExposureModeSupported(AVCaptureDevice.ExposureMode.autoExpose) {
+            currentDevice.exposureMode = AVCaptureDevice.ExposureMode.autoExpose
         }
         currentDevice.unlockForConfiguration()
 

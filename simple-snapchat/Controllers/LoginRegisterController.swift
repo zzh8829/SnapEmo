@@ -109,7 +109,7 @@ class LoginRegisterController: UIViewController {
         return tf
     }()
     
-    func handleLoginOrRegister() {
+    @objc func handleLoginOrRegister() {
         spinnerView.startAnimating()
         loginRegisterButton.isUserInteractionEnabled = false
         loginRegisterSegmentedControl.selectedSegmentIndex == 0 ? handleLogin() : handleRegister()
@@ -127,19 +127,19 @@ class LoginRegisterController: UIViewController {
             return
         }
         
-        FIRAuth.auth()?.signIn(withEmail: email, password: password, completion: { (user, error) in
+        Auth.auth().signIn(withEmail: email, password: password, completion: { (user, error) in
             self.spinnerView.stopAnimating()
             if let error = error {
                 self.loginRegisterButton.isUserInteractionEnabled = true
-                if let errCode = FIRAuthErrorCode(rawValue: error._code) {
+                if let errCode = AuthErrorCode(rawValue: error._code) {
                     switch errCode {
-                    case .errorCodeUserNotFound:
+                    case .userNotFound:
                         self.displayAlert(title: "Email Not Found", message: "Please check your email!")
-                    case .errorCodeInvalidEmail:
+                    case .invalidEmail:
                         self.displayAlert(title: "Invalid Email", message: "Please check your email format!")
-                    case .errorCodeWrongPassword:
+                    case .wrongPassword:
                         self.displayAlert(title: "Wrong Password", message: "Please check your password!")
-                    case .errorCodeNetworkError:
+                    case .networkError:
                         self.displayAlert(title: "Netword Error", message: "No network connection!")
                     default:
                         print("unknown error")
@@ -164,22 +164,22 @@ class LoginRegisterController: UIViewController {
         self.present(alert, animated: true, completion: nil)
     }
     
-    func handleForgetPassword (){
+    @objc func handleForgetPassword (){
         guard let email = emailTextField.text else{
              self.displayAlert(title: "Invalid Form", message: "Please fill in your email!")
              return
         }
         
-        FIRAuth.auth()?.sendPasswordReset(withEmail: email, completion: { (error) in
+        Auth.auth().sendPasswordReset(withEmail: email, completion: { (error) in
     
              if let error = error {
-                if let errCode = FIRAuthErrorCode(rawValue: error._code) {
+                if let errCode = AuthErrorCode(rawValue: error._code) {
                     switch errCode {
-                    case .errorCodeInvalidEmail:
+                    case .invalidEmail:
                         self.displayAlert(title: "Invalid Email", message: "Please check your email format!")
-                    case .errorCodeNetworkError:
+                    case .networkError:
                         self.displayAlert(title: "Netword Error", message: "No network connection!")
-                    case .errorCodeUserNotFound:
+                    case .userNotFound:
                          self.displayAlert(title: "No User Found", message: "No user record found!")
                     default:
                         print("unknown error")
@@ -207,19 +207,19 @@ class LoginRegisterController: UIViewController {
             return
         }
         
-        FIRAuth.auth()?.createUser(withEmail: email, password: password, completion: { (user, error) in
+        Auth.auth().createUser(withEmail: email, password: password, completion: { (user, error) in
             self.spinnerView.stopAnimating()
             if let error = error {
                 self.loginRegisterButton.isUserInteractionEnabled = true
-                if let errCode = FIRAuthErrorCode(rawValue: error._code) {
+                if let errCode = AuthErrorCode(rawValue: error._code) {
                     switch errCode {
-                    case .errorCodeInvalidEmail:
+                    case .invalidEmail:
                         self.displayAlert(title: "Invalid Email", message: "Please check your email format!")
-                    case .errorCodeEmailAlreadyInUse:
+                    case .emailAlreadyInUse:
                         self.displayAlert(title: "Email Already Registered", message: "Please use another email!")
-                    case .errorCodeWeakPassword:
+                    case .weakPassword:
                         self.displayAlert(title: "Weak Password", message: "Your password is too weak!")
-                    case .errorCodeNetworkError:
+                    case .networkError:
                         self.displayAlert(title: "Netword Error", message: "No network connection!")
                     default:
                         print("unknown error")
@@ -233,7 +233,7 @@ class LoginRegisterController: UIViewController {
                     return
                 }
                 
-                let ref = FIRDatabase.database().reference()
+                let ref = Database.database().reference()
                 let userRef = ref.child("users").child(uid)
                 let values = ["name": username, "email": email]
  
@@ -252,7 +252,7 @@ class LoginRegisterController: UIViewController {
     }
     
     
-    func handleLoginRegisterChange() {
+    @objc func handleLoginRegisterChange() {
         let title = loginRegisterSegmentedControl.titleForSegment(at: loginRegisterSegmentedControl.selectedSegmentIndex)
         loginRegisterButton.setTitle(title, for: UIControlState())
         
@@ -435,7 +435,7 @@ class LoginRegisterController: UIViewController {
     }
     
     
-    func handleKeyboardWillShow(notification: Notification){
+    @objc func handleKeyboardWillShow(notification: Notification){
         //get keyboard height
         let keyboardFrame = notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as! NSValue
         let height = keyboardFrame.cgRectValue.height

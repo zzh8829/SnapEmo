@@ -90,7 +90,7 @@ class PublicStoryCell: UICollectionViewCell, UIWebViewDelegate, UIGestureRecogni
         return cv
     }()
     
-    func handleDismiss(swipeGesture: UIGestureRecognizer) {
+    @objc func handleDismiss(swipeGesture: UIGestureRecognizer) {
         publicStoryController?.dismiss(animated: true, completion: nil)
     }
     

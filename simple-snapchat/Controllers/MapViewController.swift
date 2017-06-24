@@ -96,7 +96,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate , MKMapView
         // Dispose of any resources that can be recreated.
     }
     
-    func closeMap(){
+    @objc func closeMap(){
         self.dismiss(animated: true, completion: nil)
     }
     /*
@@ -109,7 +109,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate , MKMapView
     }
     */
     
-    func buttonTapped(){
+    @objc func buttonTapped(){
 
         if CLLocationCoordinate2DIsValid(partnerLocation){
             calculateDistance(source: location.coordinate, destination: partnerLocation)
@@ -119,7 +119,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate , MKMapView
     }
     
     func shareLocation(){
-        let ref = FIRDatabase.database().reference().child("messages")
+        let ref = Database.database().reference().child("messages")
         let childRef = ref.childByAutoId()
         
         let lat : String = location.coordinate.latitude.description
@@ -135,9 +135,9 @@ class MapViewController: UIViewController, CLLocationManagerDelegate , MKMapView
                 return
             }
             //Update user-messages for both sender and receiver
-            let senderMsgRef = FIRDatabase.database().reference().child("user-messages").child(self.fromID!).child(self.toID!)
+            let senderMsgRef = Database.database().reference().child("user-messages").child(self.fromID!).child(self.toID!)
             senderMsgRef.updateChildValues([childRef.key : 1])
-            let receiverMsgRef = FIRDatabase.database().reference().child("user-messages").child(self.toID!).child(self.fromID!)
+            let receiverMsgRef = Database.database().reference().child("user-messages").child(self.toID!).child(self.fromID!)
             receiverMsgRef.updateChildValues([childRef.key : 1])
         }
         closeMap()

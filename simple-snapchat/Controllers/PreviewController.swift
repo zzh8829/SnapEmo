@@ -208,12 +208,12 @@ class PreviewController: UIViewController, UIPickerViewDataSource ,UIPickerViewD
      The method to save image to server.
      */
     func saveToFirebase() {
-        let uid = FIRAuth.auth()?.currentUser?.uid
+        let uid = Auth.auth().currentUser?.uid
         var username = String()
         
         // Create story reference
-        let snapsRef = FIRDatabase.database().reference().child("snaps")
-        FIRDatabase.database().reference().child("users").child(uid!).observeSingleEvent(of: .value, with: { (snapshot) in
+        let snapsRef = Database.database().reference().child("snaps")
+        Database.database().reference().child("users").child(uid!).observeSingleEvent(of: .value, with: { (snapshot) in
             if let dictionary = snapshot.value as? [String: AnyObject] {
                 
                 username = dictionary["name"] as! String
@@ -221,12 +221,12 @@ class PreviewController: UIViewController, UIPickerViewDataSource ,UIPickerViewD
         })
         
         let imageName = NSUUID().uuidString
-        let storageRef = FIRStorage.storage().reference().child("snaps").child(imageName)
+        let storageRef = Storage.storage().reference().child("snaps").child(imageName)
         let image_original = self.captureScreen()
         let image_upload = self.ResizeImage(image: image_original, targetSize: CGSize.init(width:304,height:604))
         let uploadData = UIImagePNGRepresentation(image_upload)
         
-        storageRef.put(uploadData!, metadata: nil, completion: { (metaData, error) in
+        storageRef.putData(uploadData!, metadata: nil, completion: { (metaData, error) in
             
             if error != nil {
                 print(error)
@@ -370,7 +370,7 @@ class PreviewController: UIViewController, UIPickerViewDataSource ,UIPickerViewD
             let a = NSEntityDescription.insertNewObject(forEntityName: "Photo", into: contextManaged) as! Photo
             a.photo_data = imageData as NSData?
             a.timer = Int64(self.pic_duaration)
-            a.user_id = FIRAuth.auth()?.currentUser?.uid
+            a.user_id = Auth.auth().currentUser?.uid
             print(a.user_id)
             do {
                 try contextManaged.save()

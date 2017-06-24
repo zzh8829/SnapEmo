@@ -42,7 +42,7 @@ class ChatCell: UITableViewCell{
         let chatParrtnerID = message?.chatPartnerId()
 
         if let id = chatParrtnerID{
-            let ref = FIRDatabase.database().reference().child("users").child(id)
+            let ref = Database.database().reference().child("users").child(id)
             ref.observeSingleEvent(of: .value, with: {(snapshot) in
                 if let dictionary = snapshot.value as? [String: AnyObject] {
                     self.textLabel?.text =  dictionary["name"] as? String

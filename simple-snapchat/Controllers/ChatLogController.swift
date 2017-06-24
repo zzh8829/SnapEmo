@@ -18,7 +18,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate ,UIColl
     // This uid is the partner id
     var partnerId: String?{
         didSet{
-            let ref = FIRDatabase.database().reference().child("users").child(partnerId!)
+            let ref = Database.database().reference().child("users").child(partnerId!)
             ref.observeSingleEvent(of: .value, with: { (snapshot) in
                 if let dictionary = snapshot.value as? [String: AnyObject]{
                  let user = User()
@@ -31,14 +31,14 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate ,UIColl
     }
     
     func observeMessages(){
-        guard let uid = FIRAuth.auth()?.currentUser?.uid, let pid = partnerId else {
+        guard let uid = Auth.auth().currentUser?.uid, let pid = partnerId else {
             return
         }
-        let userMsgRef = FIRDatabase.database().reference().child("user-messages").child(uid).child(pid)
+        let userMsgRef = Database.database().reference().child("user-messages").child(uid).child(pid)
         userMsgRef.observe(.childAdded, with: { (snapshot) in
             
             let messageId = snapshot.key
-            let messageRef = FIRDatabase.database().reference().child("messages").child(messageId)
+            let messageRef = Database.database().reference().child("messages").child(messageId)
             
             messageRef.observeSingleEvent(of: .value, with: { (snapshot) in
                 guard let dictionary = snapshot.value as? [String: AnyObject] else{return}
@@ -234,13 +234,13 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate ,UIColl
 
     
     override func viewDidDisappear(_ animated: Bool) {
-        guard let uid = FIRAuth.auth()?.currentUser?.uid, let pid = partnerId else {
+        guard let uid = Auth.auth().currentUser?.uid, let pid = partnerId else {
             return
         }
-        let userMsgRef = FIRDatabase.database().reference().child("user-messages").child(uid).child(pid)
+        let userMsgRef = Database.database().reference().child("user-messages").child(uid).child(pid)
         userMsgRef.removeValue { (error, FIRDatabaseReference) in
             print("delete all messages for ", uid, "'s child ", pid)
-            let partnerMsgRef = FIRDatabase.database().reference().child("user-messages").child(pid).child(uid)
+            let partnerMsgRef = Database.database().reference().child("user-messages").child(pid).child(uid)
             partnerMsgRef.removeValue(completionBlock: { (eoor, FIRDatabaseReference) in
                 print("delete all messages for ", pid, "'s child ", uid)
             })
@@ -251,7 +251,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate ,UIColl
          NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardDidShow), name: .UIKeyboardDidShow, object: nil)
     }
     
-    func handleKeyboardDidShow(notification: Notification){
+    @objc func handleKeyboardDidShow(notification: Notification){
         if messages.count > 0{
             let index = messages.count - 1
             let indexPath = NSIndexPath(item: index, section: 0)
@@ -366,7 +366,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate ,UIColl
         }
         
         // Incoming and outgoing messages
-        if message.fromID == FIRAuth.auth()?.currentUser?.uid {
+        if message.fromID == Auth.auth().currentUser?.uid {
             // outgoing blue bubble
             cell.bubbleView.backgroundColor = MessageCell.blueColor
             cell.textView.textColor = UIColor.white
@@ -403,16 +403,16 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate ,UIColl
         // This width is equal to the width of bubble view
         let size = CGSize(width:200, height:1000)
         let options = NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin)
-        return NSString(string: text).boundingRect(with: size, options: options, attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 16)], context: nil)
+        return NSString(string: text).boundingRect(with: size, options: options, attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 16)], context: nil)
         
     }
     
     // Send button tapped function
     func handleSend(){
         self.inputTextField.endEditing(true)
-        let ref = FIRDatabase.database().reference().child("messages")
+        let ref = Database.database().reference().child("messages")
         let childRef = ref.childByAutoId()
-        let fromID = FIRAuth.auth()!.currentUser!.uid
+        let fromID = Auth.auth().currentUser!.uid
         let toID = partnerId!
         let timestamp = Int(NSDate().timeIntervalSince1970)
         let values = ["text": inputTextField.text!, "toID": toID, "fromID": fromID, "timestamp": timestamp] as [String : Any]
@@ -423,13 +423,13 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate ,UIColl
                 return
             }
             //Update user-messages for both sender and receiver
-            let senderMsgRef = FIRDatabase.database().reference().child("user-messages").child(fromID).child(toID)
+            let senderMsgRef = Database.database().reference().child("user-messages").child(fromID).child(toID)
             senderMsgRef.updateChildValues([childRef.key : 1])
-            let receiverMsgRef = FIRDatabase.database().reference().child("user-messages").child(toID).child(fromID)
+            let receiverMsgRef = Database.database().reference().child("user-messages").child(toID).child(fromID)
             receiverMsgRef.updateChildValues([childRef.key : 1])
             
             //Update friendship level for both sender and receiver
-            let senderFriendLevel = FIRDatabase.database().reference().child("friendship-level").child(fromID)
+            let senderFriendLevel = Database.database().reference().child("friendship-level").child(fromID)
             senderFriendLevel.observeSingleEvent(of: .value, with: { (snapshot) in
                 
                 if var dictionary = snapshot.value as? [String: Int]{
@@ -448,7 +448,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate ,UIColl
                 }
             })
             
-            let receiverFriendLevel = FIRDatabase.database().reference().child("friendship-level").child(toID)
+            let receiverFriendLevel = Database.database().reference().child("friendship-level").child(toID)
             receiverFriendLevel.observeSingleEvent(of: .value, with: { (snapshot) in
                 
                 if var dictionary = snapshot.value as? [String: Int]{
@@ -487,7 +487,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate ,UIColl
      */
     
     
-    func handleUploadTap(){
+    @objc func handleUploadTap(){
         let imagePickerController = UIImagePickerController()
         imagePickerController.delegate = self
         present(imagePickerController, animated: true,completion:nil)
@@ -507,10 +507,10 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate ,UIColl
     
     private func uploadToFirebaseStorageUsingImage(image: UIImage){
         let imageName = NSUUID().uuidString
-        let ref = FIRStorage.storage().reference().child("message_images").child(imageName)
+        let ref = Storage.storage().reference().child("message_images").child(imageName)
         
         if let uploadData = UIImageJPEGRepresentation(image, 0.01){
-            ref.put(uploadData, metadata: nil, completion: { (metadata, error) in
+            ref.putData(uploadData, metadata: nil, completion: { (metadata, error) in
                 if error != nil {
                     print("Failed to upload image :", error)
                     return
@@ -524,9 +524,9 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate ,UIColl
     
     private func sendMessageWithImageUrl(imageUrl: String, image: UIImage){
         
-        let ref = FIRDatabase.database().reference().child("messages")
+        let ref = Database.database().reference().child("messages")
         let childRef = ref.childByAutoId()
-        let fromID = FIRAuth.auth()!.currentUser!.uid
+        let fromID = Auth.auth().currentUser!.uid
         let toID = partnerId!
         let timestamp = Int(NSDate().timeIntervalSince1970)
         let values = [ "toID": toID, "fromID": fromID, "timestamp": timestamp, "imageUrl": imageUrl, "imageWidth": image.size.width, "imageHeight": image.size.height] as [String : Any]
@@ -537,9 +537,9 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate ,UIColl
                 return
             }
             //Update user-messages for both sender and receiver
-            let senderMsgRef = FIRDatabase.database().reference().child("user-messages").child(fromID).child(toID)
+            let senderMsgRef = Database.database().reference().child("user-messages").child(fromID).child(toID)
             senderMsgRef.updateChildValues([childRef.key : 1])
-            let receiverMsgRef = FIRDatabase.database().reference().child("user-messages").child(toID).child(fromID)
+            let receiverMsgRef = Database.database().reference().child("user-messages").child(toID).child(fromID)
             receiverMsgRef.updateChildValues([childRef.key : 1])
         }
         
@@ -583,7 +583,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate ,UIColl
                 }, completion: nil)}
     }
     
-    func handleZoomOut(tapGesture: UITapGestureRecognizer){
+    @objc func handleZoomOut(tapGesture: UITapGestureRecognizer){
         
         if let zoomOutImageView = tapGesture.view{
             //Ned to animate back out to controller
@@ -606,9 +606,9 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate ,UIColl
         Handle Map
      */
     
-    func openMap(){
+    @objc func openMap(){
         let mapController = MapViewController()
-        mapController.fromID = FIRAuth.auth()!.currentUser!.uid
+        mapController.fromID = Auth.auth().currentUser!.uid
         mapController.toID = partnerId!
         let navController = UINavigationController(rootViewController: mapController)
         present(navController, animated:true, completion:nil)
@@ -618,7 +618,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate ,UIColl
     
     func openMapWithLocation(location : CLLocationCoordinate2D){
         let mapController = MapViewController()
-        mapController.fromID = FIRAuth.auth()!.currentUser!.uid
+        mapController.fromID = Auth.auth().currentUser!.uid
         mapController.toID = partnerId!
         mapController.partnerLocation = location
         let navController = UINavigationController(rootViewController: mapController)
@@ -657,14 +657,14 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate ,UIColl
             present(navController, animated:true, completion:nil)
             
             //Delete from database
-            guard let uid = FIRAuth.auth()?.currentUser?.uid, let pid = partnerId else {
+            guard let uid = Auth.auth().currentUser?.uid, let pid = partnerId else {
                 return
             }
             print("That image should be deleted!", messageID)
-            let myMessagesRef = FIRDatabase.database().reference().child("user-messages").child(uid).child(pid).child(messageID)
+            let myMessagesRef = Database.database().reference().child("user-messages").child(uid).child(pid).child(messageID)
             myMessagesRef.removeValue(completionBlock: { (error, FIRDatabaseReference) in
                 print("Delete it from user-messages", uid,"'s child", pid)
-                let partnerMessageRef = FIRDatabase.database().reference().child("user-messages").child(pid).child(uid).child(messageID)
+                let partnerMessageRef = Database.database().reference().child("user-messages").child(pid).child(uid).child(messageID)
                 partnerMessageRef.removeValue(completionBlock: { (error, FIRDatabaseReference) in
                     print("Delete it from user-messages", pid,"'s child", uid)
                     DispatchQueue.global().async {
@@ -680,7 +680,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate ,UIColl
         // TODO: Open the image and add timer
     }
     
-    func openCamera(){
+    @objc func openCamera(){
         let scrollView = self.navigationController?.view.superview as? UIScrollView
         UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
             scrollView!.contentOffset.x = self.view.frame.width

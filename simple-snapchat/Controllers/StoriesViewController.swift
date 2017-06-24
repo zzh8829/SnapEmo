@@ -40,11 +40,11 @@ class StoriesViewController: UICollectionViewController, UICollectionViewDelegat
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        if uid != FIRAuth.auth()?.currentUser?.uid{
+        if uid != Auth.auth().currentUser?.uid{
             myself = nil
             friends.removeAll()
             friendIDAsArray.removeAll()
-            uid = FIRAuth.auth()?.currentUser?.uid
+            uid = Auth.auth().currentUser?.uid
             observeStories()
         }
         
@@ -53,7 +53,7 @@ class StoriesViewController: UICollectionViewController, UICollectionViewDelegat
     
     
     func observeStories() {
-        FIRDatabase.database().reference().child("stories").observe(.childAdded, with: { (snapshot) in
+        Database.database().reference().child("stories").observe(.childAdded, with: { (snapshot) in
             if let dictionary = snapshot.value as? [String: AnyObject]{
                 
                 let userID = dictionary["userID"] as? String
@@ -83,7 +83,7 @@ class StoriesViewController: UICollectionViewController, UICollectionViewDelegat
                         }
                     }).resume()
                 }
-                else if self.myself == nil && userID == FIRAuth.auth()?.currentUser?.uid {
+                else if self.myself == nil && userID == Auth.auth().currentUser?.uid {
                     // the user is me but I dont have my story yet
                     self.myself = User()
                     self.myself?.id = userID
@@ -240,7 +240,7 @@ class StoriesViewController: UICollectionViewController, UICollectionViewDelegat
     var startingFrame: CGRect?
     var startingImageView: UIImageView?
     
-    func handleDisplayStories(tapGesture: UITapGestureRecognizer) {
+    @objc func handleDisplayStories(tapGesture: UITapGestureRecognizer) {
         
         let storyCell = tapGesture.view as? StoryCell
         var stories = [Story]()
@@ -321,7 +321,7 @@ class StoriesViewController: UICollectionViewController, UICollectionViewDelegat
         }
     }
     
-    func handleStopStory(tapGesture: UITapGestureRecognizer) {
+    @objc func handleStopStory(tapGesture: UITapGestureRecognizer) {
         if let zoomingImageView = tapGesture.view as? UIImageView{
             UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
                 

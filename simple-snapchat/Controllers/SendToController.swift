@@ -81,11 +81,11 @@ class SendToController: UIViewController, UITableViewDelegate, UITableViewDataSo
     }
     
     func fetchFriends() {
-        if let currentUserId = FIRAuth.auth()?.currentUser?.uid {
-            FIRDatabase.database().reference().child("friendship").child(currentUserId).observe(.childAdded, with: { (snapshot) in
+        if let currentUserId = Auth.auth().currentUser?.uid {
+            Database.database().reference().child("friendship").child(currentUserId).observe(.childAdded, with: { (snapshot) in
                 if snapshot.value as? Int == 2 {
                     let friendId = snapshot.key
-                    FIRDatabase.database().reference().child("users").child(friendId).observeSingleEvent(of: .value, with: { (friendSnapshot) in
+                    Database.database().reference().child("users").child(friendId).observeSingleEvent(of: .value, with: { (friendSnapshot) in
                         if let dictionary = friendSnapshot.value as? [String: String] {
                             let user = User()
                             user.setValuesForKeys(dictionary)
@@ -104,11 +104,11 @@ class SendToController: UIViewController, UITableViewDelegate, UITableViewDataSo
         
     }
     
-    func handleSend() {
-        if let uid = FIRAuth.auth()?.currentUser?.uid {
+    @objc func handleSend() {
+        if let uid = Auth.auth().currentUser?.uid {
             self.currentUid = uid
             // Fetch current user's name
-            FIRDatabase.database().reference().child("users").child(uid).observeSingleEvent(of: .value, with: { (snapshot) in
+            Database.database().reference().child("users").child(uid).observeSingleEvent(of: .value, with: { (snapshot) in
                 if let dictionary = snapshot.value as? [String: AnyObject] {
                     self.currentUsername = dictionary["name"] as! String
                 }
@@ -116,11 +116,11 @@ class SendToController: UIViewController, UITableViewDelegate, UITableViewDataSo
             
             for i in 0..<photos.count {
                 let imageName = NSUUID().uuidString
-                let sharedRef = FIRStorage.storage().reference().child("sharedImages").child(imageName)
+                let sharedRef = Storage.storage().reference().child("sharedImages").child(imageName)
                 let image = photos[i].image!
                 let uploadData = UIImagePNGRepresentation(image)
                 
-                sharedRef.put(uploadData!, metadata: nil, completion: { (metaData, error) in
+                sharedRef.putData(uploadData!, metadata: nil, completion: { (metaData, error) in
                     
                     if error != nil {
                         print(error)
@@ -152,7 +152,7 @@ class SendToController: UIViewController, UITableViewDelegate, UITableViewDataSo
     func sendToMyStory(photoIndex: Int) {
         
         // Create story reference
-        let storiesRef = FIRDatabase.database().reference().child("stories")
+        let storiesRef = Database.database().reference().child("stories")
         
         let timer = photos[photoIndex].timer!
         let imageURL = photos[photoIndex].imageURL!
@@ -167,9 +167,9 @@ class SendToController: UIViewController, UITableViewDelegate, UITableViewDataSo
     }
     
     func sendToFriend(photoIndex: Int, uid: String) {
-        let ref = FIRDatabase.database().reference().child("messages")
+        let ref = Database.database().reference().child("messages")
         let childRef = ref.childByAutoId()
-        let fromID = FIRAuth.auth()!.currentUser!.uid
+        let fromID = Auth.auth().currentUser!.uid
         let toID = uid
         let timestamp = Int(NSDate().timeIntervalSince1970)
         let values = [ "timer": photos[photoIndex].timer!, "toID": toID, "fromID": fromID, "timestamp": timestamp, "imageUrl": photos[photoIndex].imageURL!] as [String : Any]
@@ -180,15 +180,15 @@ class SendToController: UIViewController, UITableViewDelegate, UITableViewDataSo
                 return
             }
             //Update user-messages for both sender and receiver
-            let senderMsgRef = FIRDatabase.database().reference().child("user-messages").child(fromID).child(toID)
+            let senderMsgRef = Database.database().reference().child("user-messages").child(fromID).child(toID)
             senderMsgRef.updateChildValues([childRef.key : 1])
-            let receiverMsgRef = FIRDatabase.database().reference().child("user-messages").child(toID).child(fromID)
+            let receiverMsgRef = Database.database().reference().child("user-messages").child(toID).child(fromID)
             receiverMsgRef.updateChildValues([childRef.key : 1])
         }
 
     }
     
-    func handleCancle() {
+    @objc func handleCancle() {
         self.dismiss(animated: true, completion: nil)
     }
     

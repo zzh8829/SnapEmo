@@ -25,12 +25,12 @@ class AddedMeTableViewController: UITableViewController {
 
     func fetchRequest(){
    
-        if let myID = FIRAuth.auth()?.currentUser?.uid{
-            let ref = FIRDatabase.database().reference().child("friendship").child(myID)
+        if let myID = Auth.auth().currentUser?.uid{
+            let ref = Database.database().reference().child("friendship").child(myID)
             ref.observe(.childAdded, with: { (snapshot) in
                 if (snapshot.value as! Int == 1) {
                     let requestID = snapshot.key
-                    let userRef = FIRDatabase.database().reference().child("users").child(requestID)
+                    let userRef = Database.database().reference().child("users").child(requestID)
                     userRef.observeSingleEvent(of: .value, with: { (snapshot) in
                         if let dictionary = snapshot.value as? [String : AnyObject]{
                             let user = User()
@@ -50,15 +50,15 @@ class AddedMeTableViewController: UITableViewController {
        
     }
     
-    func addFriend(sender: UIButton){
+    @objc func addFriend(sender: UIButton){
         let targetUser = friendRequest[sender.tag]
         if let requesterID = targetUser.id {
-            let accepterID = FIRAuth.auth()?.currentUser?.uid
+            let accepterID = Auth.auth().currentUser?.uid
             
-            let reqRef = FIRDatabase.database().reference().child("friendship").child(requesterID)
+            let reqRef = Database.database().reference().child("friendship").child(requesterID)
             reqRef.updateChildValues([accepterID! : 2])
             
-            let accRef = FIRDatabase.database().reference().child("friendship").child(accepterID!)
+            let accRef = Database.database().reference().child("friendship").child(accepterID!)
             accRef.updateChildValues([requesterID : 2])
             let name = targetUser.name!
             

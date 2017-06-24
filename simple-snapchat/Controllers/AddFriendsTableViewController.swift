@@ -61,8 +61,8 @@ class AddFriendsTableViewController: UITableViewController,MFMessageComposeViewC
     
     
     func sendSMSText() {
-        if let uid = FIRAuth.auth()?.currentUser?.uid{
-            let userRef = FIRDatabase.database().reference().child("users").child(uid)
+        if let uid = Auth.auth().currentUser?.uid{
+            let userRef = Database.database().reference().child("users").child(uid)
             userRef.observeSingleEvent(of: .value, with: { (snapshot) in
                 if let dictionary = snapshot.value as? [String: AnyObject]{
                     let username = dictionary["name"] as! String

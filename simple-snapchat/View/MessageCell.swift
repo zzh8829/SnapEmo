@@ -46,7 +46,7 @@ class MessageCell: UICollectionViewCell {
         return imageView
     }()
     
-    func handleTap(tapGesture: UITapGestureRecognizer){
+    @objc func handleTap(tapGesture: UITapGestureRecognizer){
         // Type 0 : normal
         // Type 1 : location
         // Type 2 : with view constraint

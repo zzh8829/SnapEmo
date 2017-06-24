@@ -27,7 +27,7 @@ class NewChatTableViewController: UITableViewController {
         navigationItem.title = "Chat with..."
         self.navigationController?.navigationBar.barTintColor = UIColor.white
         self.navigationController?.navigationBar.tintColor = UIColor(red: 102, green: 178, blue: 255)
-        self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName:UIColor(red: 102, green: 178, blue: 255)]
+        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor.rawValue:UIColor(red: 102, green: 178, blue: 255)]
         navigationController?.navigationBar.isHidden = false
         
         fetchFriends()
@@ -48,13 +48,13 @@ class NewChatTableViewController: UITableViewController {
     
     
     func fetchFriends(){
-        if let myID = FIRAuth.auth()?.currentUser?.uid{
-            let friendRef = FIRDatabase.database().reference().child("friendship").child(myID)
+        if let myID = Auth.auth().currentUser?.uid{
+            let friendRef = Database.database().reference().child("friendship").child(myID)
             friendRef.observe(.childAdded, with: { (snapshot) in
                 if snapshot.value as? Int == 2 {
                     let key = snapshot.key
                     let user = User()
-                    let userRef = FIRDatabase.database().reference().child("users").child(key)
+                    let userRef = Database.database().reference().child("users").child(key)
                     userRef.observeSingleEvent(of: .value, with: { (snapshot) in
                         if let dictionary = snapshot.value as? [String: AnyObject]{
                             user.setValuesForKeys(dictionary)
@@ -72,7 +72,7 @@ class NewChatTableViewController: UITableViewController {
         }
     }
     
-    func handleCancel(){
+    @objc func handleCancel(){
         /* let usersController = usersTableViewController()
          let navController = UINavigationController(rootViewController: usersController)
          present(navController, animated:true, completion:nil)*/

@@ -44,7 +44,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         
         // Initialize Firebase
-        FIRApp.configure()
+        FirebaseApp.configure()
         
         return true
     }

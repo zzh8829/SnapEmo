@@ -52,13 +52,13 @@ class MyFriendsTableViewController: UITableViewController {
    
     func fetchFriends(){
 
-        if let myID = FIRAuth.auth()?.currentUser?.uid{
-            let friendRef = FIRDatabase.database().reference().child("friendship").child(myID)
+        if let myID = Auth.auth().currentUser?.uid{
+            let friendRef = Database.database().reference().child("friendship").child(myID)
             friendRef.observe(.childAdded, with: { (snapshot) in
                 if snapshot.value as? Int == 2 {
                     let key = snapshot.key
                     let user = User()
-                    let userRef = FIRDatabase.database().reference().child("users").child(key)
+                    let userRef = Database.database().reference().child("users").child(key)
                     userRef.observeSingleEvent(of: .value, with: { (snapshot) in
                         if let dictionary = snapshot.value as? [String: AnyObject]{
                             user.setValuesForKeys(dictionary)

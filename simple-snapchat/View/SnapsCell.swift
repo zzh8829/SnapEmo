@@ -57,7 +57,7 @@ class SnapsCell: UICollectionViewCell, UICollectionViewDataSource, UICollectionV
         do {
             let results = try context.fetch(fetchRequest)
             for snap in results {
-                if snap.user_id == FIRAuth.auth()?.currentUser?.uid {
+                if snap.user_id == Auth.auth().currentUser?.uid {
                     if let image: UIImage = UIImage(data: snap.photo_data as! Data , scale: 1) {
                         self.imgArray.append(image)
                         snaps.append(snap)

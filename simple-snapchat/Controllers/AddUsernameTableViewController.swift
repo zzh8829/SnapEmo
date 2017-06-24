@@ -42,15 +42,15 @@ class AddUsernameTableViewController: UITableViewController {
     func fetchUser(){
         
         self.allusers = [User]()
-        if let myID = FIRAuth.auth()?.currentUser?.uid{
-            FIRDatabase.database().reference().child("users").observe(.childAdded, with: {(snapshot) in
+        if let myID = Auth.auth().currentUser?.uid{
+            Database.database().reference().child("users").observe(.childAdded, with: {(snapshot) in
                 if let dictionary = snapshot.value as? [String: AnyObject]{
                     let user = User()
                     user.setValuesForKeys(dictionary)
                     user.id = snapshot.key
                     
                     if user.id != myID {
-                         let friendRef = FIRDatabase.database().reference().child("friendship").child(myID)
+                         let friendRef = Database.database().reference().child("friendship").child(myID)
                         friendRef.observeSingleEvent(of: .value, with: { (snapshot) in
                             
                             if let dictionary = snapshot.value as? [String : AnyObject]{
@@ -144,16 +144,16 @@ class AddUsernameTableViewController: UITableViewController {
                     user = self.allusers[indexPath.row]
                 }
             
-            let fromID = (FIRAuth.auth()?.currentUser?.uid)!
+            let fromID = (Auth.auth().currentUser?.uid)!
             let toID = user.id!
             
             // "0": wait for partner's acceptance
             // "1": receive a new request, the user can choose to accept or reject
             // "2": establish the friendship
             
-            let senderFriendRef = FIRDatabase.database().reference().child("friendship").child(fromID)
+            let senderFriendRef = Database.database().reference().child("friendship").child(fromID)
             senderFriendRef.updateChildValues([toID : 0])
-            let receiverFriendRef = FIRDatabase.database().reference().child("friendship").child(toID)
+            let receiverFriendRef = Database.database().reference().child("friendship").child(toID)
             receiverFriendRef.updateChildValues([fromID: 1])
             
             let alertView = UIAlertView();

@@ -29,7 +29,7 @@ class ChatListTableViewController: UITableViewController {
         navigationItem.title = "Chat"
         self.navigationController?.navigationBar.barTintColor = UIColor(red: 102, green: 178, blue: 255)
         self.navigationController?.navigationBar.tintColor = UIColor.white
-        self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName:UIColor.white]
+        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor.rawValue:UIColor.white]
         navigationController?.navigationBar.isHidden = false
         
         self.tableView.delegate = self
@@ -45,7 +45,7 @@ class ChatListTableViewController: UITableViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         friends.removeAll()
-        uid = FIRAuth.auth()?.currentUser?.uid
+        uid = Auth.auth().currentUser?.uid
         fetchFriends()
     }
     
@@ -62,18 +62,18 @@ class ChatListTableViewController: UITableViewController {
     
     
     func fetchFriends(){
-        guard  let uid = FIRAuth.auth()?.currentUser?.uid else {
+        guard  let uid = Auth.auth().currentUser?.uid else {
             return
         }
         
-        let ref = FIRDatabase.database().reference().child("friendship-level").child(uid)
+        let ref = Database.database().reference().child("friendship-level").child(uid)
         ref.observe(.childAdded, with: { (snapshot) in
             print("Here I fetch the friends",snapshot)
             let thisFriend = Friend()
             let friendID = snapshot.key
             thisFriend.id = friendID
             thisFriend.friendLevel = snapshot.value as! Int?
-            let friendRef = FIRDatabase.database().reference().child("users").child(friendID)
+            let friendRef = Database.database().reference().child("users").child(friendID)
             friendRef.observeSingleEvent(of: .value, with: { (snapshot) in
                 if let dictionary = snapshot.value as? [String: AnyObject]{
                     thisFriend.email = dictionary["email"] as! String?
@@ -166,7 +166,7 @@ class ChatListTableViewController: UITableViewController {
     }
     
     //TODO: When click the top left button, choosing a friend to chat with
-    func addNewChat(){
+    @objc func addNewChat(){
         let newChatController = NewChatTableViewController()
         newChatController.chatListController = self
         let navController = UINavigationController(rootViewController: newChatController)
@@ -174,7 +174,7 @@ class ChatListTableViewController: UITableViewController {
     }
     
     
-    func cameraView(){
+    @objc func cameraView(){
         let scrollView = self.navigationController?.view?.superview as? UIScrollView
                 UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
             scrollView!.contentOffset.x = self.view.frame.width

@@ -113,7 +113,7 @@ class MemoriesController: UICollectionViewController, UICollectionViewDelegateFl
         return db
     }()
     
-    func handleDelete() {
+    @objc func handleDelete() {
         if let selectedSnapsPhotos = snapsView?.indexPathsForSelectedItems {
             for i in 0..<selectedSnapsPhotos.count {
                 let snapsCell = snapsView?.superview as! SnapsCell
@@ -166,7 +166,7 @@ class MemoriesController: UICollectionViewController, UICollectionViewDelegateFl
     }
 
     
-    func handleSend() {
+    @objc func handleSend() {
         if let selectedCameraRollPhotos = cameraRollView?.indexPathsForSelectedItems, let selectedSnapsPhotos = snapsView?.indexPathsForSelectedItems {
             let sendToController = SendToController()
             
@@ -193,7 +193,7 @@ class MemoriesController: UICollectionViewController, UICollectionViewDelegateFl
         
     }
     
-    func handleSelectImage() {
+    @objc func handleSelectImage() {
         
         if didClickSelectButton == false {
             

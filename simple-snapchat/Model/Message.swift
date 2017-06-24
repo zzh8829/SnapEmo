@@ -29,7 +29,7 @@ class Message:NSObject{
     var partnerName: String!
     
     func chatPartnerId() ->String?{
-        return fromID == FIRAuth.auth()?.currentUser?.uid ? toID: fromID
+        return fromID == Auth.auth().currentUser?.uid ? toID: fromID
     }
     
     
@@ -37,7 +37,7 @@ class Message:NSObject{
 //        var name: String?
 //        
 //        var partnerID = chatPartnerId()
-//        let partNameRef = FIRDatabase.database().reference().child("user").child(partnerID!).child("name")
+//        let partNameRef = Database.database().reference().child("user").child(partnerID!).child("name")
 //        partNameRef.observeSingleEvent(of: .value, with: { (snapshot) in
 //            name = snapshot as! String
 //            print("Chat partner's name is :", name)
