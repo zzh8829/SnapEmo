@@ -32,6 +32,8 @@ class CameraViewController : UIViewController, AVCaptureVideoDataOutputSampleBuf
     var videoDataOutputQueue: DispatchQueue!
     var lasttime:TimeInterval = 0
     
+    var msCognitive: MSCognitive!
+    
     /**
      The outlet of UIView of the CameraView.
      */
@@ -93,6 +95,8 @@ class CameraViewController : UIViewController, AVCaptureVideoDataOutputSampleBuf
         
         square = UIImage(named: "squarePNG")
         smile = UIImage(named: "smilePNG")
+        
+        msCognitive = MSCognitive()
         
         let detectorOptions = [CIDetectorAccuracy: CIDetectorAccuracyHigh, CIDetectorTracking: true] as [String : Any]
         faceDetector = CIDetector(ofType: CIDetectorTypeFace, context: nil, options: detectorOptions)
@@ -282,6 +286,15 @@ class CameraViewController : UIViewController, AVCaptureVideoDataOutputSampleBuf
         let fdesc = CMSampleBufferGetFormatDescription(sampleBuffer)!
         let clap = CMVideoFormatDescriptionGetCleanAperture(fdesc, false /*originIsTopLeft == false*/)
         
+        msCognitive.postImageData(cImage: ciImage) { (rect, emotion, score) in
+            self.videoDataOutputQueue.async() {
+                guard let rect = rect else {
+                    return
+                }
+                self.drawEmotion(rect: rect, emotion: emotion, score: score, clap: clap)
+            }
+        }
+        
         videoDataOutputQueue.async() {
             self.drawFaceBoxesForFeatures(features: features, forVideoBox: clap, orientation: curDeviceOrientation)
         }
@@ -300,6 +313,46 @@ class CameraViewController : UIViewController, AVCaptureVideoDataOutputSampleBuf
         scaledRect.origin.y = rect.origin.y * aspectRatio + (to.height - from.height * aspectRatio) / 2
         
         return scaledRect
+    }
+    
+    
+    func drawEmotion(rect: CGRect, emotion: Emotion, score: Double, clap: CGRect) {
+         let sublayers = capturePreviewLayer?.sublayers ?? []
+        
+        let parentFrameSize = previewView.frame.size;
+        let isMirrored = capturePreviewLayer?.connection?.isVideoMirrored ?? false
+        
+        let cameraBox = CGSize(width: clap.size.height, height: clap.size.width)
+        
+        var faceRect = resizeRectAspectFill(rect: rect, from: cameraBox, to: parentFrameSize)
+        
+        if isMirrored {
+            faceRect = faceRect.offsetBy(dx: parentFrameSize.width - faceRect.origin.x * 2 - faceRect.size.width, dy:0)
+        }
+        
+        for layer in sublayers {
+            if layer.name == "EmotionLayer" {
+                layer.isHidden = true
+            }
+        }
+        var featureLayer: CALayer? = nil
+        var currentSublayer = 0
+        let sublayersCount = sublayers.count
+        while featureLayer == nil && (currentSublayer < sublayersCount) {
+            let currentLayer = sublayers[currentSublayer];currentSublayer += 1
+            if currentLayer.name == "EmotionLayer" {
+                featureLayer = currentLayer
+                currentLayer.isHidden = false
+            }
+        }
+        
+        // create a new one if necessary
+        if featureLayer == nil {
+            featureLayer = CALayer()
+            featureLayer!.name = "EmotionLayer"
+            capturePreviewLayer?.addSublayer(featureLayer!)
+        }
+        
     }
     
     // called asynchronously as the capture output is capturing sample buffers, this method asks the face detector (if on)
