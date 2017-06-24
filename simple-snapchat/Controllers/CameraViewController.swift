@@ -10,7 +10,7 @@ import UIKit
 import AVFoundation
 import Firebase
 
-class CameraViewController : UIViewController {
+class CameraViewController : UIViewController, AVCaptureVideoDataOutputSampleBufferDelegate {
     
     var usingSimulator: Bool = true
     var captureSession : AVCaptureSession!
@@ -24,6 +24,13 @@ class CameraViewController : UIViewController {
     var ImageCaptured: UIImage!
     var cameraState:Bool = true
     var flashOn:Bool = false
+    
+    var faceDetector:CIDetector!
+    var capturePreviewLayer: AVCaptureVideoPreviewLayer?
+    var square: UIImage!
+    var smile: UIImage!
+    var videoDataOutputQueue: DispatchQueue!
+    var lasttime:TimeInterval = 0
     
     /**
      The outlet of UIView of the CameraView.
@@ -78,11 +85,19 @@ class CameraViewController : UIViewController {
 
     }
     
+    private func DegreesToRadians(degrees: CGFloat) -> CGFloat {return degrees * .pi / 180}
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.isNavigationBarHidden = true
-        loadCamera()
         
+        square = UIImage(named: "squarePNG")
+        smile = UIImage(named: "smilePNG")
+        
+        let detectorOptions = [CIDetectorAccuracy: CIDetectorAccuracyHigh, CIDetectorTracking: true] as [String : Any]
+        faceDetector = CIDetector(ofType: CIDetectorTypeFace, context: nil, options: detectorOptions)
+        
+        loadCamera()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -162,15 +177,26 @@ class CameraViewController : UIViewController {
         stillImageOutput = AVCaptureStillImageOutput()
         stillImageOutput.outputSettings = [AVVideoCodecKey: AVVideoCodecJPEG]
         captureSession.addOutput(stillImageOutput)
-        let capturePreviewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
         
-        capturePreviewLayer.videoGravity = AVLayerVideoGravity.resizeAspectFill
+        // Make a video data output
+        let videoDataOutput = AVCaptureVideoDataOutput()
+        // we want BGRA, both CoreGraphics and OpenGL work well with 'BGRA'
+        let rgbOutputSettings = [kCVPixelBufferPixelFormatTypeKey as String: NSNumber(value: kCMPixelFormat_32BGRA)]
         
-        capturePreviewLayer.frame = self.view.frame
+        videoDataOutput.videoSettings = rgbOutputSettings
+        videoDataOutput.alwaysDiscardsLateVideoFrames = true
         
-        capturePreviewLayer.bounds = self.view.bounds
+        videoDataOutputQueue = DispatchQueue(label: "VideoDataOutputQueue")
+        videoDataOutput.setSampleBufferDelegate(self, queue: videoDataOutputQueue)
+        captureSession.addOutput(videoDataOutput)
+        videoDataOutput.connection(with: AVMediaType.video)!.isEnabled = true
         
-        previewView.layer.addSublayer(capturePreviewLayer)
+        capturePreviewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
+        capturePreviewLayer!.videoGravity = AVLayerVideoGravity.resizeAspectFill
+        capturePreviewLayer!.frame = self.view.frame
+        capturePreviewLayer!.bounds = self.view.bounds
+        
+        previewView.layer.addSublayer(capturePreviewLayer!)
         
     }
     
@@ -194,6 +220,248 @@ class CameraViewController : UIViewController {
                 self.performSegue(withIdentifier: "test", sender: self)}
             })
         }
+    }
+    
+    func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
+        if Date().timeIntervalSince1970 - lasttime < 0.1 {
+            return
+        }
+        lasttime = Date().timeIntervalSince1970;
+        // got an image
+        let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer)!
+        let attachments = CMCopyDictionaryOfAttachments(kCFAllocatorDefault, sampleBuffer, kCMAttachmentMode_ShouldPropagate) as NSDictionary? as! [String: Any]?
+        let ciImage = CIImage(cvPixelBuffer: pixelBuffer, options: attachments)
+        let curDeviceOrientation = UIDevice.current.orientation
+        var exifOrientation: Int = 0
+        
+        /* kCGImagePropertyOrientation values
+         The intended display orientation of the image. If present, this key is a CFNumber value with the same value as defined
+         by the TIFF and EXIF specifications -- see enumeration of integer constants.
+         The value specified where the origin (0,0) of the image is located. If not present, a value of 1 is assumed.
+         
+         used when calling featuresInImage: options: The value for this key is an integer NSNumber from 1..8 as found in kCGImagePropertyOrientation.
+         If present, the detection will be done based on that orientation but the coordinates in the returned features will still be based on those of the image. */
+        
+        
+        let PHOTOS_EXIF_0ROW_TOP_0COL_LEFT            = 1 //   1  =  0th row is at the top, and 0th column is on the left (THE DEFAULT).
+        //let PHOTOS_EXIF_0ROW_TOP_0COL_RIGHT            = 2 //   2  =  0th row is at the top, and 0th column is on the right.
+        let PHOTOS_EXIF_0ROW_BOTTOM_0COL_RIGHT      = 3 //   3  =  0th row is at the bottom, and 0th column is on the right.
+        //let PHOTOS_EXIF_0ROW_BOTTOM_0COL_LEFT       = 4 //   4  =  0th row is at the bottom, and 0th column is on the left.
+        //let PHOTOS_EXIF_0ROW_LEFT_0COL_TOP          = 5 //   5  =  0th row is on the left, and 0th column is the top.
+        let PHOTOS_EXIF_0ROW_RIGHT_0COL_TOP         = 6 //   6  =  0th row is on the right, and 0th column is the top.
+        //let PHOTOS_EXIF_0ROW_RIGHT_0COL_BOTTOM      = 7 //   7  =  0th row is on the right, and 0th column is the bottom.
+        let PHOTOS_EXIF_0ROW_LEFT_0COL_BOTTOM       = 8  //   8  =  0th row is on the left, and 0th column is the bottom.
+        
+        switch curDeviceOrientation {
+        case .portraitUpsideDown:  // Device oriented vertically, home button on the top
+            exifOrientation = PHOTOS_EXIF_0ROW_LEFT_0COL_BOTTOM
+        case .landscapeLeft:       // Device oriented horizontally, home button on the right
+            if !cameraFacingback {
+                exifOrientation = PHOTOS_EXIF_0ROW_BOTTOM_0COL_RIGHT
+            } else {
+                exifOrientation = PHOTOS_EXIF_0ROW_TOP_0COL_LEFT
+            }
+        case .landscapeRight:      // Device oriented horizontally, home button on the left
+            if !cameraFacingback {
+                exifOrientation = PHOTOS_EXIF_0ROW_TOP_0COL_LEFT
+            } else {
+                exifOrientation = PHOTOS_EXIF_0ROW_BOTTOM_0COL_RIGHT
+            }
+        case .portrait:            // Device oriented vertically, home button on the bottom
+            fallthrough
+        default:
+            exifOrientation = PHOTOS_EXIF_0ROW_RIGHT_0COL_TOP
+        }
+        
+        let imageOptions = [CIDetectorImageOrientation: exifOrientation, CIDetectorSmile: true] as [String : Any]
+        let features = faceDetector.features(in: ciImage, options: imageOptions)
+        
+        // get the clean aperture
+        // the clean aperture is a rectangle that defines the portion of the encoded pixel dimensions
+        // that represents image data valid for display.
+        let fdesc = CMSampleBufferGetFormatDescription(sampleBuffer)!
+        let clap = CMVideoFormatDescriptionGetCleanAperture(fdesc, false /*originIsTopLeft == false*/)
+        
+        videoDataOutputQueue.async() {
+            self.drawFaceBoxesForFeatures(features: features, forVideoBox: clap, orientation: curDeviceOrientation)
+        }
+    }
+    
+    func videoPreviewBoxForGravity(gravity: AVLayerVideoGravity, frameSize: CGSize, apertureSize: CGSize) -> CGRect {
+//        print(apertureSize)
+        let apertureRatio = apertureSize.height / apertureSize.width
+        let viewRatio = frameSize.width / frameSize.height
+        
+        var size = CGSize.zero
+        switch gravity {
+        case .resizeAspectFill:
+            if viewRatio > apertureRatio {
+                size.width = frameSize.width
+                size.height = apertureSize.width * (frameSize.width / apertureSize.height)
+            } else {
+                size.width = apertureSize.height * (frameSize.height / apertureSize.width)
+                size.height = frameSize.height
+            }
+        case .resizeAspect:
+            if viewRatio > apertureRatio {
+                size.width = apertureSize.height * (frameSize.height / apertureSize.width)
+                size.height = frameSize.height;
+            } else {
+                size.width = frameSize.width;
+                size.height = apertureSize.width * (frameSize.width / apertureSize.height);
+            }
+        case .resize:
+            size.width = frameSize.width
+            size.height = frameSize.height
+        default:
+            break
+        }
+//        print(size, frameSize)
+        var videoBox: CGRect = CGRect()
+        size = frameSize;
+        videoBox.size = frameSize;
+        if size.width < frameSize.width {
+            videoBox.origin.x = (frameSize.width - size.width) / 2
+        } else {
+            videoBox.origin.x = (size.width - frameSize.width) / 2
+        }
+        
+        if size.height < frameSize.height {
+            videoBox.origin.y = (frameSize.height - size.height) / 2
+        } else {
+            videoBox.origin.y = (size.height - frameSize.height) / 2
+        }
+        
+        return videoBox;
+    }
+    
+    // called asynchronously as the capture output is capturing sample buffers, this method asks the face detector (if on)
+    // to detect features and for each draw the red square in a layer and set appropriate orientation
+    private func drawFaceBoxesForFeatures(features: [CIFeature], forVideoBox clap: CGRect, orientation: UIDeviceOrientation) {
+        let sublayers = capturePreviewLayer?.sublayers ?? []
+        let sublayersCount = sublayers.count
+        var currentSublayer = 0
+        var featuresCount = features.count, currentFeature = 0
+        
+        CATransaction.begin()
+        CATransaction.setValue(true, forKey: kCATransactionDisableActions)
+        
+        // hide all the face layers
+        for layer in sublayers {
+            if layer.name == "FaceLayer" {
+                layer.isHidden = true
+            }
+        }
+        
+//        print(featuresCount, sublayersCount)
+        
+        if featuresCount == 0 {
+            CATransaction.commit()
+            return // early bail.
+        }
+        
+        let parentFrameSize = previewView.frame.size;
+        let gravity = capturePreviewLayer?.videoGravity
+        let isMirrored = capturePreviewLayer?.connection?.isVideoMirrored ?? false
+        let previewBox = videoPreviewBoxForGravity(gravity: gravity!,
+                                                   frameSize: parentFrameSize,
+                                                   apertureSize: clap.size)
+        
+        for ff in features as! [CIFaceFeature] {
+            var x : CGFloat = 0.0, y : CGFloat = 0.0
+            if ff.hasLeftEyePosition {
+                x = ff.leftEyePosition.x
+                y = ff.leftEyePosition.y
+//                print(ff.leftEyeClosed ? "(\(x) \(y))" : "(\(x) \(y))" + "👀")
+            }
+            
+            if ff.hasRightEyePosition {
+                x = ff.rightEyePosition.x
+                y = ff.rightEyePosition.y
+//                print(ff.rightEyeClosed ? "(\(x) \(y))" : "(\(x) \(y))" + "👀")
+            }
+            
+            if ff.hasMouthPosition {
+                x = ff.mouthPosition.x
+                y = ff.mouthPosition.y
+//                print(ff.hasSmile ? "\(x) \(y)" + "😊" : "(\(x) \(y))")
+            }
+        }
+        
+        
+        for ff in features as! [CIFaceFeature] {
+            // find the correct position for the square layer within the previewLayer
+            // the feature box originates in the bottom left of the video frame.
+            // (Bottom right if mirroring is turned on)
+            var faceRect = ff.bounds
+            
+            // flip preview width and height
+            var temp = faceRect.size.width
+            faceRect.size.width = faceRect.size.height
+            faceRect.size.height = temp
+            temp = faceRect.origin.x
+            faceRect.origin.x = faceRect.origin.y
+            faceRect.origin.y = temp
+            // scale coordinates so they fit in the preview box, which may be scaled
+            let widthScaleBy = previewBox.size.width / clap.size.height
+            let heightScaleBy = previewBox.size.height / clap.size.width
+            faceRect.size.width *= widthScaleBy
+            faceRect.size.height *= heightScaleBy
+            faceRect.origin.x *= widthScaleBy
+            faceRect.origin.y *= heightScaleBy
+            
+            if isMirrored {
+                faceRect = faceRect.offsetBy(dx: previewBox.origin.x + previewBox.size.width - faceRect.size.width - (faceRect.origin.x * 2), dy: previewBox.origin.y)
+            } else {
+                faceRect = faceRect.offsetBy(dx: previewBox.origin.x, dy: previewBox.origin.y)
+            }
+            
+//            print(faceRect, previewBox, ff.bounds)
+            
+            var featureLayer: CALayer? = nil
+            
+            // re-use an existing layer if possible
+            while featureLayer == nil && (currentSublayer < sublayersCount) {
+                let currentLayer = sublayers[currentSublayer];currentSublayer += 1
+                if currentLayer.name == "FaceLayer" {
+                    featureLayer = currentLayer
+                    currentLayer.isHidden = false
+                }
+            }
+            
+            // create a new one if necessary
+            if featureLayer == nil {
+                featureLayer = CALayer()
+                featureLayer!.name = "FaceLayer"
+                capturePreviewLayer?.addSublayer(featureLayer!)
+            }
+            if ff.hasSmile {
+                featureLayer!.contents = smile.cgImage
+                print("smile")
+            } else {
+                featureLayer!.contents = square.cgImage
+            }
+            featureLayer!.frame = faceRect
+            
+            switch orientation {
+            case .portrait:
+                featureLayer!.setAffineTransform(CGAffineTransform(rotationAngle: DegreesToRadians(degrees: 0.0)))
+            case .portraitUpsideDown:
+                featureLayer!.setAffineTransform(CGAffineTransform(rotationAngle: DegreesToRadians(degrees: 180.0)))
+            case .landscapeLeft:
+                featureLayer!.setAffineTransform(CGAffineTransform(rotationAngle: DegreesToRadians(degrees: 90.0)))
+            case .landscapeRight:
+                featureLayer!.setAffineTransform(CGAffineTransform(rotationAngle: DegreesToRadians(degrees: -90.0)))
+            case .faceUp, .faceDown:
+                break
+            default:
+                
+                break // leave the layer in its last known orientation//        }
+            }
+            currentFeature += 1
+        }
+        
+        CATransaction.commit()
     }
     
     /**
