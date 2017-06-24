@@ -287,6 +287,35 @@ class CameraViewController : UIViewController, AVCaptureVideoDataOutputSampleBuf
         }
     }
     
+    func postImageData(completion: () -> ()) {
+        let requestUrl = URL(string: "https://westus.api.cognitive.microsoft.com/emotion/v1.0/recognize")
+        let key = "b2ecededcbe3486fae0a8976b794e4f2"
+        
+        var request = URLRequest(url: requestUrl!)
+        request.setValue(key, forHTTPHeaderField: "Ocp-Apim-Subscription-Key")
+        
+        let image = UIImage(named: "sad.jpg")
+        let imageData = UIImagePNGRepresentation(image!)
+        request.setValue("application/octet-stream", forHTTPHeaderField: "Content-Type")
+        request.httpBody = imageData
+        
+        request.httpMethod = "POST"
+        
+        let task = URLSession.shared.dataTask(with: request){ data, response, error in
+            if error != nil{
+                print("Error -> \(String(describing: error))")
+                return
+            }else{
+                //print(data)
+                let results = try! JSONSerialization.jsonObject(with: data!)
+                print(results)
+            }
+            
+        }
+        task.resume()
+        
+    }
+    
     func videoPreviewBoxForGravity(gravity: AVLayerVideoGravity, frameSize: CGSize, apertureSize: CGSize) -> CGRect {
 //        print(apertureSize)
         let apertureRatio = apertureSize.height / apertureSize.width

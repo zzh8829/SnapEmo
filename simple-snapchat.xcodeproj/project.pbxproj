@@ -61,6 +61,7 @@
 		79E7CFF81D9CE95A00F081E2 /* ChatCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79E7CFF71D9CE95A00F081E2 /* ChatCell.swift */; };
 		79E7CFFA1D9E04AA00F081E2 /* MessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79E7CFF91D9E04AA00F081E2 /* MessageCell.swift */; };
 		79E7CFFD1D9EC01600F081E2 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79E7CFFC1D9EC01600F081E2 /* Extensions.swift */; };
+		87291ED71EFF026700699CAF /* MSCognitive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87291ED61EFF026700699CAF /* MSCognitive.swift */; };
 		D4E231381DA470F5008B7FC4 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D4E231371DA470F5008B7FC4 /* CoreData.framework */; };
 		D4E2313E1DA4722D008B7FC4 /* photoModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D4E2313C1DA4722D008B7FC4 /* photoModel.xcdatamodeld */; };
 		E45A50C61EFDFE200067B59E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E45A50C51EFDFE180067B59E /* GoogleService-Info.plist */; };
@@ -146,6 +147,7 @@
 		79E7CFF71D9CE95A00F081E2 /* ChatCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ChatCell.swift; path = View/ChatCell.swift; sourceTree = "<group>"; };
 		79E7CFF91D9E04AA00F081E2 /* MessageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MessageCell.swift; path = View/MessageCell.swift; sourceTree = "<group>"; };
 		79E7CFFC1D9EC01600F081E2 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		87291ED61EFF026700699CAF /* MSCognitive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MSCognitive.swift; sourceTree = "<group>"; };
 		AEAE246D0AA3AD2FEEC45FB0 /* Pods_simple_snapchat.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_simple_snapchat.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D4E231371DA470F5008B7FC4 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		D4E2313D1DA4722D008B7FC4 /* photoModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = photoModel.xcdatamodel; sourceTree = "<group>"; };
@@ -216,6 +218,7 @@
 				002A34FF1DCDED7500BC0A29 /* PreviewController.swift */,
 				002A35011DCDED9300BC0A29 /* StickerCell.swift */,
 				79E7CFF41D9C259F00F081E2 /* CameraViewController.swift */,
+				87291ED61EFF026700699CAF /* MSCognitive.swift */,
 			);
 			name = Carema;
 			sourceTree = "<group>";
@@ -467,7 +470,7 @@
 				TargetAttributes = {
 					00DD9D131D98F5D3006489BE = {
 						CreatedOnToolsVersion = 8.0;
-						DevelopmentTeam = S2F82QPTJ4;
+						DevelopmentTeam = 89449AARGW;
 						LastSwiftMigration = 0900;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
@@ -596,6 +599,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				002A35001DCDED7500BC0A29 /* PreviewController.swift in Sources */,
+				87291ED71EFF026700699CAF /* MSCognitive.swift in Sources */,
 				002A350C1DCDEEFC00BC0A29 /* StoryCell.swift in Sources */,
 				002A34F61DCDEC9000BC0A29 /* Photo+CoreDataProperties.swift in Sources */,
 				00E2E8D91DADCA380080CF24 /* SendingPhoto.swift in Sources */,
@@ -802,7 +806,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "simple-snapchat/simple-snapchat.entitlements";
-				DEVELOPMENT_TEAM = S2F82QPTJ4;
+				DEVELOPMENT_TEAM = 89449AARGW;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -824,7 +828,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "simple-snapchat/simple-snapchat.entitlements";
-				DEVELOPMENT_TEAM = S2F82QPTJ4;
+				DEVELOPMENT_TEAM = 89449AARGW;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
