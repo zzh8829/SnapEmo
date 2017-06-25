@@ -1,0 +1,6 @@
+framework module Pods_SnapEmoTests {
+  umbrella header "Pods-SnapEmoTests-umbrella.h"
+
+  export *
+  module * { export * }
+}

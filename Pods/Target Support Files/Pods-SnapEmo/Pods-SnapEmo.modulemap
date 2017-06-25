@@ -1,0 +1,6 @@
+framework module Pods_SnapEmo {
+  umbrella header "Pods-SnapEmo-umbrella.h"
+
+  export *
+  module * { export * }
+}

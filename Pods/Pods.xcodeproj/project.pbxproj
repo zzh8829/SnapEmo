@@ -1,0 +1,690 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		16D95CED89D8F1EC074E7F1BC6BDE0B8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6604A7D69453B4569E4E4827FB9155A9 /* Foundation.framework */; };
+		1A9FF44809DA0E716288C899447B0A95 /* Pods-SnapEmoUITests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = F77D77974B46C7BDC802A632CA76EFF4 /* Pods-SnapEmoUITests-dummy.m */; };
+		2A8AA55DBE6BFB3F1154EEB2EE717325 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6604A7D69453B4569E4E4827FB9155A9 /* Foundation.framework */; };
+		40D595B25BFC967D4F7B6751CF706773 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6604A7D69453B4569E4E4827FB9155A9 /* Foundation.framework */; };
+		6F2AF561C899A5EEA465308926BCE60E /* Pods-SnapEmoUITests-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = A0C2EA7BBA016C2C1C90CBAA46CB4B71 /* Pods-SnapEmoUITests-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		7A1C337FF2747F59E5EAC89AE106FD9A /* Pods-SnapEmoTests-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 461AEB2C887CF108A1FB8CA62F5D949A /* Pods-SnapEmoTests-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		82761ABF1053CAAFC8559AC6BA8FB5C2 /* Pods-SnapEmoTests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = EE96A37001F8F99CF36ECA9606333828 /* Pods-SnapEmoTests-dummy.m */; };
+		8465D3213DEABE56B0856C606ED1AD5D /* Pods-SnapEmo-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 31B232A8E8F71631B08CF63B241FF373 /* Pods-SnapEmo-dummy.m */; };
+		906CD8EA3CD87EDDE007B6A14D3B6D94 /* Pods-SnapEmo-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 60968E64E04C30B2CBAF0CB9F82305C1 /* Pods-SnapEmo-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		1070859DC66F4E445FED2E632ED8F6A2 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		22C3016A5E6740D1B5BDBE2E22EA6DCB /* Pods-SnapEmoUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-SnapEmoUITests.release.xcconfig"; sourceTree = "<group>"; };
+		28452167E7D73F58BED6F2686B4D7128 /* Pods-SnapEmoUITests-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-SnapEmoUITests-frameworks.sh"; sourceTree = "<group>"; };
+		31B232A8E8F71631B08CF63B241FF373 /* Pods-SnapEmo-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-SnapEmo-dummy.m"; sourceTree = "<group>"; };
+		340E3620BAFFEB3C7C2D6354922EC465 /* Pods-SnapEmoTests-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-SnapEmoTests-resources.sh"; sourceTree = "<group>"; };
+		34B5FB5B6C9A00B8829A809D4AD2F818 /* Pods-SnapEmo-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-SnapEmo-resources.sh"; sourceTree = "<group>"; };
+		3613555053884E6C715603C6519B4680 /* Pods-SnapEmoTests.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = "Pods-SnapEmoTests.modulemap"; sourceTree = "<group>"; };
+		45B08221A2E43C1D53D42A38BA236274 /* Pods_SnapEmoUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SnapEmoUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		461AEB2C887CF108A1FB8CA62F5D949A /* Pods-SnapEmoTests-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-SnapEmoTests-umbrella.h"; sourceTree = "<group>"; };
+		5B7808BBD984829DF68B9F73CF8BED4D /* Pods-SnapEmo-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-SnapEmo-acknowledgements.markdown"; sourceTree = "<group>"; };
+		605ADB6F7A29BE2EBD7C7766867A742D /* Pods-SnapEmoUITests.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = "Pods-SnapEmoUITests.modulemap"; sourceTree = "<group>"; };
+		60968E64E04C30B2CBAF0CB9F82305C1 /* Pods-SnapEmo-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-SnapEmo-umbrella.h"; sourceTree = "<group>"; };
+		6604A7D69453B4569E4E4827FB9155A9 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.3.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		68926B8BE18D23D3FA2DDEA3E7C2DEA5 /* Pods-SnapEmo-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-SnapEmo-frameworks.sh"; sourceTree = "<group>"; };
+		690385A02A3715AF3D3E3C43960B5DF8 /* Pods-SnapEmo.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = "Pods-SnapEmo.modulemap"; sourceTree = "<group>"; };
+		6FB89BC40A92DBB7B3673A5D6E820F2F /* Pods_SnapEmo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SnapEmo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		70A41214F077CA7760A3D01EFA4427D5 /* Pods-SnapEmoUITests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-SnapEmoUITests-acknowledgements.plist"; sourceTree = "<group>"; };
+		89CB62FE5CB88B8A68984A7328622CCF /* Pods-SnapEmoTests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-SnapEmoTests-acknowledgements.plist"; sourceTree = "<group>"; };
+		8DA32AF791E27CF606530E096200D5D3 /* Pods-SnapEmoUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-SnapEmoUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		92864D8F73EE3BDD3A54C5DE670BF293 /* Pods-SnapEmo-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-SnapEmo-acknowledgements.plist"; sourceTree = "<group>"; };
+		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		9EE15D9E212CC36F2B16EE73F036857C /* Pods-SnapEmoTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-SnapEmoTests.release.xcconfig"; sourceTree = "<group>"; };
+		A0C2EA7BBA016C2C1C90CBAA46CB4B71 /* Pods-SnapEmoUITests-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-SnapEmoUITests-umbrella.h"; sourceTree = "<group>"; };
+		A444B7C39D47FCD71CCA72D4837AE564 /* Pods-SnapEmo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-SnapEmo.debug.xcconfig"; sourceTree = "<group>"; };
+		A44C2403D16489A054DA4AD9757B8793 /* Pods-SnapEmoTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-SnapEmoTests.debug.xcconfig"; sourceTree = "<group>"; };
+		A8B905C24BF620046FB0B40001C04030 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		AFF1499730AFE4884002C5208D2DE6CE /* Pods-SnapEmoTests-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-SnapEmoTests-frameworks.sh"; sourceTree = "<group>"; };
+		B0816051BD92557CD748EA23A5165F42 /* Pods_SnapEmoTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SnapEmoTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C717F9DBD62A16AE7AA66A056A64BA31 /* Pods-SnapEmoTests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-SnapEmoTests-acknowledgements.markdown"; sourceTree = "<group>"; };
+		DA320A0E3F01F107CC2CAF4AF4D2E0CB /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		DAD8E297770DCE9AFF8907F38B5A3B13 /* Pods-SnapEmoUITests-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-SnapEmoUITests-resources.sh"; sourceTree = "<group>"; };
+		EE96A37001F8F99CF36ECA9606333828 /* Pods-SnapEmoTests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-SnapEmoTests-dummy.m"; sourceTree = "<group>"; };
+		F6B235F4150E1A623305FADF44198598 /* Pods-SnapEmoUITests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-SnapEmoUITests-acknowledgements.markdown"; sourceTree = "<group>"; };
+		F77D77974B46C7BDC802A632CA76EFF4 /* Pods-SnapEmoUITests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-SnapEmoUITests-dummy.m"; sourceTree = "<group>"; };
+		FD09E944FA0C38C5E5E2957E3BA68FC8 /* Pods-SnapEmo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-SnapEmo.release.xcconfig"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		3D8FFD502E633C3FCF87BB94550F4FED /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2A8AA55DBE6BFB3F1154EEB2EE717325 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5E1084EAE9DB2650741B5C844CDBF113 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				16D95CED89D8F1EC074E7F1BC6BDE0B8 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		83370A256EEC32601E72355B5557844A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				40D595B25BFC967D4F7B6751CF706773 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		01D479C15AE6BF816AB3EEC484930A58 /* Targets Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				E96F0D2D7813A9B73459F1D69F47D7D3 /* Pods-SnapEmo */,
+				1B2B9095715DCF5580D3219A87B42D55 /* Pods-SnapEmoTests */,
+				22988F7C52C450FE8416077660528C2F /* Pods-SnapEmoUITests */,
+			);
+			name = "Targets Support Files";
+			sourceTree = "<group>";
+		};
+		1B2B9095715DCF5580D3219A87B42D55 /* Pods-SnapEmoTests */ = {
+			isa = PBXGroup;
+			children = (
+				A8B905C24BF620046FB0B40001C04030 /* Info.plist */,
+				3613555053884E6C715603C6519B4680 /* Pods-SnapEmoTests.modulemap */,
+				C717F9DBD62A16AE7AA66A056A64BA31 /* Pods-SnapEmoTests-acknowledgements.markdown */,
+				89CB62FE5CB88B8A68984A7328622CCF /* Pods-SnapEmoTests-acknowledgements.plist */,
+				EE96A37001F8F99CF36ECA9606333828 /* Pods-SnapEmoTests-dummy.m */,
+				AFF1499730AFE4884002C5208D2DE6CE /* Pods-SnapEmoTests-frameworks.sh */,
+				340E3620BAFFEB3C7C2D6354922EC465 /* Pods-SnapEmoTests-resources.sh */,
+				461AEB2C887CF108A1FB8CA62F5D949A /* Pods-SnapEmoTests-umbrella.h */,
+				A44C2403D16489A054DA4AD9757B8793 /* Pods-SnapEmoTests.debug.xcconfig */,
+				9EE15D9E212CC36F2B16EE73F036857C /* Pods-SnapEmoTests.release.xcconfig */,
+			);
+			name = "Pods-SnapEmoTests";
+			path = "Target Support Files/Pods-SnapEmoTests";
+			sourceTree = "<group>";
+		};
+		22988F7C52C450FE8416077660528C2F /* Pods-SnapEmoUITests */ = {
+			isa = PBXGroup;
+			children = (
+				DA320A0E3F01F107CC2CAF4AF4D2E0CB /* Info.plist */,
+				605ADB6F7A29BE2EBD7C7766867A742D /* Pods-SnapEmoUITests.modulemap */,
+				F6B235F4150E1A623305FADF44198598 /* Pods-SnapEmoUITests-acknowledgements.markdown */,
+				70A41214F077CA7760A3D01EFA4427D5 /* Pods-SnapEmoUITests-acknowledgements.plist */,
+				F77D77974B46C7BDC802A632CA76EFF4 /* Pods-SnapEmoUITests-dummy.m */,
+				28452167E7D73F58BED6F2686B4D7128 /* Pods-SnapEmoUITests-frameworks.sh */,
+				DAD8E297770DCE9AFF8907F38B5A3B13 /* Pods-SnapEmoUITests-resources.sh */,
+				A0C2EA7BBA016C2C1C90CBAA46CB4B71 /* Pods-SnapEmoUITests-umbrella.h */,
+				8DA32AF791E27CF606530E096200D5D3 /* Pods-SnapEmoUITests.debug.xcconfig */,
+				22C3016A5E6740D1B5BDBE2E22EA6DCB /* Pods-SnapEmoUITests.release.xcconfig */,
+			);
+			name = "Pods-SnapEmoUITests";
+			path = "Target Support Files/Pods-SnapEmoUITests";
+			sourceTree = "<group>";
+		};
+		7DB346D0F39D3F0E887471402A8071AB = {
+			isa = PBXGroup;
+			children = (
+				93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */,
+				BC3CA7F9E30CC8F7E2DD044DD34432FC /* Frameworks */,
+				AAAA8A6084BB87EC180EDB3FAA92B3FF /* Products */,
+				01D479C15AE6BF816AB3EEC484930A58 /* Targets Support Files */,
+			);
+			sourceTree = "<group>";
+		};
+		AAAA8A6084BB87EC180EDB3FAA92B3FF /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				6FB89BC40A92DBB7B3673A5D6E820F2F /* Pods_SnapEmo.framework */,
+				B0816051BD92557CD748EA23A5165F42 /* Pods_SnapEmoTests.framework */,
+				45B08221A2E43C1D53D42A38BA236274 /* Pods_SnapEmoUITests.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		BC3CA7F9E30CC8F7E2DD044DD34432FC /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				D35AF013A5F0BAD4F32504907A52519E /* iOS */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		D35AF013A5F0BAD4F32504907A52519E /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				6604A7D69453B4569E4E4827FB9155A9 /* Foundation.framework */,
+			);
+			name = iOS;
+			sourceTree = "<group>";
+		};
+		E96F0D2D7813A9B73459F1D69F47D7D3 /* Pods-SnapEmo */ = {
+			isa = PBXGroup;
+			children = (
+				1070859DC66F4E445FED2E632ED8F6A2 /* Info.plist */,
+				690385A02A3715AF3D3E3C43960B5DF8 /* Pods-SnapEmo.modulemap */,
+				5B7808BBD984829DF68B9F73CF8BED4D /* Pods-SnapEmo-acknowledgements.markdown */,
+				92864D8F73EE3BDD3A54C5DE670BF293 /* Pods-SnapEmo-acknowledgements.plist */,
+				31B232A8E8F71631B08CF63B241FF373 /* Pods-SnapEmo-dummy.m */,
+				68926B8BE18D23D3FA2DDEA3E7C2DEA5 /* Pods-SnapEmo-frameworks.sh */,
+				34B5FB5B6C9A00B8829A809D4AD2F818 /* Pods-SnapEmo-resources.sh */,
+				60968E64E04C30B2CBAF0CB9F82305C1 /* Pods-SnapEmo-umbrella.h */,
+				A444B7C39D47FCD71CCA72D4837AE564 /* Pods-SnapEmo.debug.xcconfig */,
+				FD09E944FA0C38C5E5E2957E3BA68FC8 /* Pods-SnapEmo.release.xcconfig */,
+			);
+			name = "Pods-SnapEmo";
+			path = "Target Support Files/Pods-SnapEmo";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		BF50C0BDD7AB1F296ABC9A75FA76F1B3 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6F2AF561C899A5EEA465308926BCE60E /* Pods-SnapEmoUITests-umbrella.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C61374580B1D4376E3F910C86DD6C4DE /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				906CD8EA3CD87EDDE007B6A14D3B6D94 /* Pods-SnapEmo-umbrella.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F88775E53EEE5CFA8B22991DDD62A540 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7A1C337FF2747F59E5EAC89AE106FD9A /* Pods-SnapEmoTests-umbrella.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		504FEDF0E02A6AE4AB69BA3318B8AA27 /* Pods-SnapEmoTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8A45A6BEE8252CA8254A45AEE64F0B88 /* Build configuration list for PBXNativeTarget "Pods-SnapEmoTests" */;
+			buildPhases = (
+				E6D281A9964AED3DD3C34DA01E4EAA39 /* Sources */,
+				5E1084EAE9DB2650741B5C844CDBF113 /* Frameworks */,
+				F88775E53EEE5CFA8B22991DDD62A540 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Pods-SnapEmoTests";
+			productName = "Pods-SnapEmoTests";
+			productReference = B0816051BD92557CD748EA23A5165F42 /* Pods_SnapEmoTests.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		53F3C1AAAB9ACFE83BBEF3117B775A02 /* Pods-SnapEmoUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6CDE745AAC5922E1D33913EFFDD8AACA /* Build configuration list for PBXNativeTarget "Pods-SnapEmoUITests" */;
+			buildPhases = (
+				7F3A5AC427D10EF69D349E0D1FE64BFC /* Sources */,
+				83370A256EEC32601E72355B5557844A /* Frameworks */,
+				BF50C0BDD7AB1F296ABC9A75FA76F1B3 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Pods-SnapEmoUITests";
+			productName = "Pods-SnapEmoUITests";
+			productReference = 45B08221A2E43C1D53D42A38BA236274 /* Pods_SnapEmoUITests.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		FE64B4A38791F8F05F70F2D1EA047248 /* Pods-SnapEmo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5ED6B1BD445EA0BE17705939C357BD2F /* Build configuration list for PBXNativeTarget "Pods-SnapEmo" */;
+			buildPhases = (
+				1B2C41E4D0874181D49547DD8E655E3D /* Sources */,
+				3D8FFD502E633C3FCF87BB94550F4FED /* Frameworks */,
+				C61374580B1D4376E3F910C86DD6C4DE /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Pods-SnapEmo";
+			productName = "Pods-SnapEmo";
+			productReference = 6FB89BC40A92DBB7B3673A5D6E820F2F /* Pods_SnapEmo.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		D41D8CD98F00B204E9800998ECF8427E /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0830;
+				LastUpgradeCheck = 0900;
+			};
+			buildConfigurationList = 2D8E8EC45A3A1A1D94AE762CB5028504 /* Build configuration list for PBXProject "Pods" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 7DB346D0F39D3F0E887471402A8071AB;
+			productRefGroup = AAAA8A6084BB87EC180EDB3FAA92B3FF /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				FE64B4A38791F8F05F70F2D1EA047248 /* Pods-SnapEmo */,
+				504FEDF0E02A6AE4AB69BA3318B8AA27 /* Pods-SnapEmoTests */,
+				53F3C1AAAB9ACFE83BBEF3117B775A02 /* Pods-SnapEmoUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		1B2C41E4D0874181D49547DD8E655E3D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8465D3213DEABE56B0856C606ED1AD5D /* Pods-SnapEmo-dummy.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7F3A5AC427D10EF69D349E0D1FE64BFC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1A9FF44809DA0E716288C899447B0A95 /* Pods-SnapEmoUITests-dummy.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E6D281A9964AED3DD3C34DA01E4EAA39 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				82761ABF1053CAAFC8559AC6BA8FB5C2 /* Pods-SnapEmoTests-dummy.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		0D32B2979498C94CB1795975CED0F281 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = A444B7C39D47FCD71CCA72D4837AE564 /* Pods-SnapEmo.debug.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = "Target Support Files/Pods-SnapEmo/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-SnapEmo/Pods-SnapEmo.modulemap";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = Pods_SnapEmo;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		1A41B15D3AA834993ADDD808FA9D8764 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_REQUIRED = NO;
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"POD_CONFIGURATION_RELEASE=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				PROVISIONING_PROFILE_SPECIFIER = NO_SIGNING/;
+				STRIP_INSTALLED_PRODUCT = NO;
+				SYMROOT = "${SRCROOT}/../build";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		2ECD9E345873BD98C14ACD47DFFE5608 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9EE15D9E212CC36F2B16EE73F036857C /* Pods-SnapEmoTests.release.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = "Target Support Files/Pods-SnapEmoTests/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-SnapEmoTests/Pods-SnapEmoTests.modulemap";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = Pods_SnapEmoTests;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		3B361DD9D12B5A44355A0134E9D97241 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 22C3016A5E6740D1B5BDBE2E22EA6DCB /* Pods-SnapEmoUITests.release.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = "Target Support Files/Pods-SnapEmoUITests/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-SnapEmoUITests/Pods-SnapEmoUITests.modulemap";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = Pods_SnapEmoUITests;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		60ACC7D2D3D344CE5DC07B165BE77341 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = A44C2403D16489A054DA4AD9757B8793 /* Pods-SnapEmoTests.debug.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = "Target Support Files/Pods-SnapEmoTests/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-SnapEmoTests/Pods-SnapEmoTests.modulemap";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = Pods_SnapEmoTests;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		7D144F724433A09597E3476A57631255 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_REQUIRED = NO;
+				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"POD_CONFIGURATION_DEBUG=1",
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				ONLY_ACTIVE_ARCH = YES;
+				PROVISIONING_PROFILE_SPECIFIER = NO_SIGNING/;
+				STRIP_INSTALLED_PRODUCT = NO;
+				SYMROOT = "${SRCROOT}/../build";
+			};
+			name = Debug;
+		};
+		84DE73F4E00422218F50C5D7CF1EE270 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8DA32AF791E27CF606530E096200D5D3 /* Pods-SnapEmoUITests.debug.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = "Target Support Files/Pods-SnapEmoUITests/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-SnapEmoUITests/Pods-SnapEmoUITests.modulemap";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = Pods_SnapEmoUITests;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		E0A919E550543144363A410119AC9D1F /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = FD09E944FA0C38C5E5E2957E3BA68FC8 /* Pods-SnapEmo.release.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = "Target Support Files/Pods-SnapEmo/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-SnapEmo/Pods-SnapEmo.modulemap";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = Pods_SnapEmo;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		2D8E8EC45A3A1A1D94AE762CB5028504 /* Build configuration list for PBXProject "Pods" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7D144F724433A09597E3476A57631255 /* Debug */,
+				1A41B15D3AA834993ADDD808FA9D8764 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		5ED6B1BD445EA0BE17705939C357BD2F /* Build configuration list for PBXNativeTarget "Pods-SnapEmo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0D32B2979498C94CB1795975CED0F281 /* Debug */,
+				E0A919E550543144363A410119AC9D1F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		6CDE745AAC5922E1D33913EFFDD8AACA /* Build configuration list for PBXNativeTarget "Pods-SnapEmoUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				84DE73F4E00422218F50C5D7CF1EE270 /* Debug */,
+				3B361DD9D12B5A44355A0134E9D97241 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8A45A6BEE8252CA8254A45AEE64F0B88 /* Build configuration list for PBXNativeTarget "Pods-SnapEmoTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				60ACC7D2D3D344CE5DC07B165BE77341 /* Debug */,
+				2ECD9E345873BD98C14ACD47DFFE5608 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
+}
