@@ -470,7 +470,7 @@
 				TargetAttributes = {
 					00DD9D131D98F5D3006489BE = {
 						CreatedOnToolsVersion = 8.0;
-						DevelopmentTeam = 89449AARGW;
+						DevelopmentTeam = S2F82QPTJ4;
 						LastSwiftMigration = 0900;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
@@ -806,7 +806,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "simple-snapchat/simple-snapchat.entitlements";
-				DEVELOPMENT_TEAM = 89449AARGW;
+				DEVELOPMENT_TEAM = S2F82QPTJ4;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -828,7 +828,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "simple-snapchat/simple-snapchat.entitlements";
-				DEVELOPMENT_TEAM = 89449AARGW;
+				DEVELOPMENT_TEAM = S2F82QPTJ4;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",

@@ -227,7 +227,7 @@ class CameraViewController : UIViewController, AVCaptureVideoDataOutputSampleBuf
     }
     
     func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
-        if Date().timeIntervalSince1970 - lasttime < 0.1 {
+        if Date().timeIntervalSince1970 - lasttime < 1 {
             return
         }
         lasttime = Date().timeIntervalSince1970;
@@ -353,6 +353,13 @@ class CameraViewController : UIViewController, AVCaptureVideoDataOutputSampleBuf
             capturePreviewLayer?.addSublayer(featureLayer!)
         }
         
+        let label = CATextLayer()
+        label.font = CTFontCreateWithName("Helvetica-Bold" as CFString, 20, nil)
+        label.string = emotion.rawValue
+        label.frame = faceRect
+        label.alignmentMode = kCAAlignmentCenter
+        label.foregroundColor = UIColor.blue.cgColor
+        featureLayer?.addSublayer(label)
     }
     
     // called asynchronously as the capture output is capturing sample buffers, this method asks the face detector (if on)

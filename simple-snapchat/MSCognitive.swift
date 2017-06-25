@@ -72,6 +72,10 @@ class MSCognitive {
     }
     
     func analyzeResult(array: [Any], completion: @escaping (CGRect?, Emotion, Double) -> ()) {
+        if array.count == 0 {
+            completion(nil, Emotion.anger, 0)
+            return
+        }
         guard let dict = array[0] as? [String : Any] else {
             completion(nil, Emotion.anger, 0)
             return
